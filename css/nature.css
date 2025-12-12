@@ -1,0 +1,602 @@
+/* =========================================
+   Nature Page Theme
+   ========================================= */
+
+/* --- Reset / Base --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  font-family: "Poppins", "Segoe UI", sans-serif;
+  color: #004d40;
+  background: linear-gradient(to bottom right, #e0f7fa, #ffffff);
+  overflow: hidden;      /* keep it immersive */
+  overflow-x: hidden;
+}
+
+/* -----------------------------------------
+   Header
+   ----------------------------------------- */
+.nature-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  z-index: 5000;
+
+  background: rgba(255, 255, 255, 0.75);
+  color: #006064;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0, 172, 193, 0.3);
+  box-shadow: 0 3px 10px rgba(0, 172, 193, 0.25);
+
+  animation: fadeDown 0.6s ease;
+  border-radius: 0 0 16px 16px; 
+}
+
+.nature-header h1 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #006064;
+  letter-spacing: 0.03em;
+  text-shadow: 0 2px 6px rgba(0, 172, 193, 0.4);
+  margin: 0;
+}
+
+.home-btn {
+  color: #ffffff;
+  background: #00acc1;
+  border: 1px solid rgba(255,255,255,0.6);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 172, 193, 0.4);
+  transition: all 0.25s ease;
+}
+
+.home-btn:hover {
+  background: #006064;
+  box-shadow: 0 6px 14px rgba(0, 96, 100, 0.5);
+}
+
+/* -----------------------------------------
+   Scene layers
+   ----------------------------------------- */
+
+.scene {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  opacity: 0;
+  transition: opacity 1s ease;
+  z-index: 0;
+
+  box-shadow: inset 0 0 60px rgba(0,0,0,0.15);
+
+  pointer-events: none; /* inactive scenes don't block clicks */
+}
+
+.scene.active {
+  opacity: 1;
+  z-index: 1;
+  pointer-events: auto;
+}
+
+/* lively mode gently floats the current scene */
+body.mode-lively .scene.active {
+  animation: sceneFade 1s ease forwards,
+             float 25s ease-in-out infinite alternate;
+}
+
+/* click zones in each scene */
+.zone {
+  position: absolute;
+  z-index: 2;
+  cursor: pointer;
+  border-radius: 10px;
+  /* If debugging touch areas, enable:
+  outline: 2px solid rgba(0,255,0,0.4);
+  */
+}
+
+/* -----------------------------------------
+   Per-scene clickable regions
+   ----------------------------------------- */
+
+/* waterfall */
+#scene-waterfall .waterfall-main  { left:30%; top:50%; width:25%; height:25%; }
+#scene-waterfall .waterfall-birds { top:5%; left:10%; width:80%; height:25%; }
+#scene-waterfall .waterfall-wind  { bottom:5%; left:5%; width:30%; height:25%; }
+
+/* nightcamp */
+#scene-nightcamp .nightcamp-fire     { left:40%; top:60%; width:15%; height:20%; }
+#scene-nightcamp .nightcamp-insects  { top:10%; right:10%; width:20%; height:15%; }
+#scene-nightcamp .nightcamp-wind     { bottom:10%; left:10%; width:30%; height:20%; }
+
+/* ocean */
+#scene-ocean .ocean-waves   { bottom:0; left:0; width:100%; height:50%; }
+#scene-ocean .ocean-gulls   { top:10%; right:10%; width:20%; height:15%; }
+#scene-ocean .ocean-breeze  { bottom:10%; left:10%; width:30%; height:20%; }
+
+/* rainy */
+#scene-rainy .rainy-sky     { top:5%; left:5%; width:90%; height:28%; }
+#scene-rainy .rainy-window  { top:40%; left:10%; width:80%; height:20%; }
+#scene-rainy .rainy-room    { bottom:5%; left:5%; width:90%; height:24%; }
+
+/* space */
+#scene-space .space-pad       { top:20%; left:20%; width:60%; height:30%; }
+#scene-space .space-winddeep  { bottom:10%; left:10%; width:30%; height:25%; }
+#scene-space .space-air       { top:5%; left:10%; width:80%; height:20%; }
+
+/* tropical */
+#scene-tropical .tropical-breeze { bottom:15%; left:10%; width:30%; height:20%; }
+#scene-tropical .tropical-frog   { top:30%; left:15%; width:30%; height:20%; }
+#scene-tropical .tropical-pad    { top:50%; left:40%; width:20%; height:20%; }
+
+/* cabin */
+#scene-cabin .cabin-fireplace   { left:40%; top:60%; width:15%; height:20%; }
+#scene-cabin .cabin-outsidewind { bottom:10%; left:10%; width:30%; height:20%; }
+#scene-cabin .cabin-roomtone    { top:20%; left:20%; width:60%; height:30%; }
+
+/* meadow */
+#scene-meadow .meadow-birds { top:5%; left:10%; width:80%; height:25%; }
+#scene-meadow .meadow-wind  { bottom:10%; left:10%; width:30%; height:20%; }
+#scene-meadow .meadow-pad   { left:30%; top:50%; width:25%; height:25%; }
+
+/* autumn */
+#scene-autumn .autumn-birds { top:5%; left:10%; width:80%; height:25%; }
+#scene-autumn .autumn-wind  { bottom:10%; left:10%; width:30%; height:20%; }
+#scene-autumn .autumn-pad   { left:30%; top:50%; width:25%; height:25%; }
+
+/* -----------------------------------------
+   Animated ambient overlays (lively mode only)
+   ----------------------------------------- */
+
+body.mode-lively #scene-rainy::before,
+body.mode-lively #scene-ocean::before,
+body.mode-lively #scene-nightcamp::before,
+body.mode-lively #scene-waterfall::before,
+body.mode-lively #scene-space::before,
+body.mode-lively #scene-cabin::before,
+body.mode-lively #scene-meadow::before,
+body.mode-lively #scene-autumn::before {
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  mix-blend-mode: screen;
+}
+
+/* rain shimmer */
+body.mode-lively #scene-rainy::before {
+  background-image: radial-gradient(rgba(255,255,255,0.22) 1px, transparent 1px);
+  background-size: 2px 50px;
+  background-repeat: repeat-y;
+  background-position: center;
+  animation: rainFall 1s linear infinite, rainDrift 8s ease-in-out infinite alternate;
+  opacity: 0.22;
+  filter: blur(0.3px);
+}
+
+/* ocean glow */
+body.mode-lively #scene-ocean::before {
+  background: radial-gradient(circle at 60% 70%, rgba(255,255,255,0.15), transparent 70%);
+  animation: oceanShimmer 3s ease-in-out infinite alternate;
+  opacity:0.18;
+}
+
+/* fire warmth */
+body.mode-lively #scene-nightcamp::before,
+body.mode-lively #scene-cabin::before {
+  background: radial-gradient(circle at 50% 80%, rgba(255,170,60,0.20), transparent 60%);
+  animation: campFlicker 2.5s ease-in-out infinite alternate;
+  opacity: 0.25;
+}
+
+/* waterfall mist */
+body.mode-lively #scene-waterfall::before {
+  background: radial-gradient(circle at 50% 80%, rgba(255,255,255,0.22), transparent 70%);
+  animation: mistRise 6s ease-in-out infinite alternate;
+  opacity:0.18;
+}
+
+/* space stars */
+body.mode-lively #scene-space::before {
+  background-image:
+    radial-gradient(rgba(255,255,255,0.9) 1px, transparent 1.5px),
+    radial-gradient(rgba(255,255,255,0.6) 1px, transparent 1.5px);
+  background-size:3px 3px,2px 2px;
+  background-position:20% 30%,70% 60%;
+  animation: starTwinkle 2.2s ease-in-out infinite alternate,
+             starDrift 40s linear infinite;
+  opacity:0.4;
+}
+
+/* meadow pollen */
+body.mode-lively #scene-meadow::before {
+  background-image: radial-gradient(rgba(255,255,255,0.22) 2px, transparent 2px);
+  background-size:6px 60px;
+  animation: pollenRise 7s ease-in-out infinite alternate;
+  opacity:0.22;
+}
+
+/* falling leaves */
+body.mode-lively #scene-autumn::before {
+  background-image:
+    radial-gradient(rgba(255,140,0,0.3) 3px, transparent 3px),
+    radial-gradient(rgba(255,94,0,0.25) 2px, transparent 2px);
+  background-size:10px 90px, 8px 70px;
+  background-repeat:repeat-y;
+  animation: leafFall 9s linear infinite,
+             leafDrift 12s ease-in-out infinite alternate;
+  opacity:0.3;
+}
+
+/* -----------------------------------------
+   Control Panel (bottom HUD)
+   ----------------------------------------- */
+
+.control-panel {
+  position: fixed;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  z-index: 4000;
+
+  width: clamp(320px, 80vw, 860px);
+  padding: 16px;
+
+  background: rgba(255,255,255,0.75);
+  backdrop-filter: blur(12px) saturate(1.5);
+
+  color: #006064;
+  border-radius: 16px;
+  border: 1px solid rgba(0,172,193,0.4);
+  box-shadow:
+    0 20px 40px rgba(0, 172, 193, 0.28),
+    0 0 20px rgba(0, 188, 212, 0.3);
+
+  transition: opacity .35s ease, transform .35s ease;
+}
+
+/* hide panel state */
+.control-panel.panel-hidden {
+  opacity: 0;
+  transform: translateX(-50%) translateY(20px);
+  pointer-events: none;
+}
+
+/* reopen handle */
+.panel-handle {
+  position: fixed;
+  left: 50%;
+  bottom: 12px;
+  transform: translateX(-50%);
+  z-index: 4500;
+
+  border: none;
+  min-height: 44px;
+  min-width: 44px;
+  line-height: 1;
+
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 10px 16px;
+  border-radius: 20px;
+  color: #ffffff;
+  background: linear-gradient(to bottom right, #00acc1, #006064);
+  box-shadow: 0 6px 18px rgba(0, 96, 100, 0.4),
+              0 0 16px rgba(0, 188, 212, 0.5);
+  border: 1px solid rgba(255,255,255,0.4);
+
+  cursor: pointer;
+  transition: box-shadow .15s ease, background .25s ease;
+}
+.panel-handle.hidden {
+  display: none;
+}
+.panel-handle:hover {
+  background: linear-gradient(to bottom right, #00cdd7, #007a72);
+  box-shadow: 0 8px 22px rgba(0, 96, 100, 0.5),
+              0 0 20px rgba(0, 188, 212, 0.6);
+}
+
+/* inner layout */
+.top-row,
+.motion-toggle,
+.navigation,
+.volume-section {
+  margin-top: 12px;
+}
+
+.top-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 12px;
+}
+
+.navigation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.motion-toggle {
+  display: flex;
+  justify-content: center;
+}
+
+/* panel buttons (stop, prev, next, mood, menu) */
+.control-panel button,
+#toggle-mood {
+  -webkit-appearance: none;
+  appearance: none;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 18px;
+  min-height: 44px;
+  min-width: 44px;
+
+  font-weight: 600;
+  font-size: 0.95rem;
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+  touch-action: manipulation;
+
+  color: #ffffff;
+  background: linear-gradient(to bottom right, #00acc1, #006064);
+  box-shadow: 0 4px 10px rgba(0,  96,100,0.4),
+              0 0 12px rgba(0,188,212,0.45);
+  border: 1px solid rgba(255,255,255,0.35);
+
+  transition: box-shadow .15s ease, background .25s ease;
+}
+
+.control-panel button:hover,
+#toggle-mood:hover {
+  background: linear-gradient(to bottom right, #00cdd7, #007a72);
+  box-shadow: 0 6px 14px rgba(0, 96,100,0.45),
+              0 0 16px rgba(0,188,212,0.55);
+}
+
+.control-panel button:active,
+#toggle-mood:active {
+  box-shadow: 0 3px 8px rgba(0, 96,100,0.35),
+              0 0 10px rgba(0,188,212,0.4);
+}
+
+.control-panel button:focus-visible,
+#toggle-mood:focus-visible {
+  outline: 3px solid #00e5ff;
+  outline-offset: 2px;
+}
+
+/* mood toggle */
+body.mode-lively #toggle-mood {
+  background: linear-gradient(to bottom right, #00cdd7, #009688);
+}
+
+/* volume sliders inside panel */
+.volume-section {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(140px, 1fr));
+  gap: 16px;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.volume-section label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  font-size: 14px;
+  color: #006064;
+}
+
+/* slider track */
+.volume-section input[type="range"] {
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(0, 96, 100, 0.2);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  margin-top: 8px;
+}
+
+/* slider thumb */
+.volume-section input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid #00acc1;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25),
+              0 0 8px rgba(0,188,212,0.6);
+  cursor: pointer;
+}
+.volume-section input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid #00acc1;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25),
+              0 0 8px rgba(0,188,212,0.6);
+  cursor: pointer;
+}
+
+/* collapse content when ☰ toggled */
+.control-panel .panel-content.collapsed {
+  display: none;
+}
+
+.creature-layer {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Firefly animation */
+.firefly {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: radial-gradient(circle, #fffc9d 0%, transparent 70%);
+  border-radius: 50%;
+  animation: fly 12s linear infinite;
+  opacity: 0.8;
+}
+
+@keyframes fly {
+  0%   { transform: translate(0, 0) scale(1); opacity: 0.8; }
+  25%  { transform: translate(40px, -30px) scale(0.9); opacity: 0.5; }
+  50%  { transform: translate(80px, 20px) scale(1.1); opacity: 1; }
+  75%  { transform: translate(40px, 60px) scale(1.0); opacity: 0.7; }
+  100% { transform: translate(0, 0) scale(1); opacity: 0.8; }
+}
+
+/* Birds (for day scenes) */
+.bird {
+  position: absolute;
+  width: 40px;
+  height: 20px;
+  background: url('img/bird.png') no-repeat center / contain;
+  animation: bird-fly 10s linear infinite;
+}
+
+@keyframes bird-fly {
+  0% { transform: translateX(-50px) translateY(30px); }
+  100% { transform: translateX(120vw) translateY(-40px); }
+}
+
+/* -----------------------------------------
+   Animations
+   ----------------------------------------- */
+
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes sceneFade {
+  from { opacity:0; transform:scale(1.02); }
+  to   { opacity:1; transform:scale(1); }
+}
+@keyframes float {
+  0%   { transform:scale(1) translateY(0); }
+  50%  { transform:scale(1.02) translateY(-10px); }
+  100% { transform:scale(1) translateY(0); }
+}
+@keyframes rainFall {
+  from { background-position:0 0; }
+  to   { background-position:0 50px; }
+}
+@keyframes rainDrift {
+  0% { transform:translateX(0); }
+  50% { transform:translateX(5px); }
+  100% { transform:translateX(0); }
+}
+@keyframes oceanShimmer {
+  0%   { transform:translateY(0); opacity:0.06; }
+  50%  { transform:translateY(-6px); opacity:0.14; }
+  100% { transform:translateY(0); opacity:0.10; }
+}
+@keyframes campFlicker {
+  0%,100% { opacity:0.12; transform:scale(1); }
+  50%     { opacity:0.30; transform:scale(1.03); }
+}
+@keyframes mistRise {
+  0%   { transform:translateY(10px); opacity:0.10; }
+  50%  { transform:translateY(-10px); opacity:0.20; }
+  100% { transform:translateY(10px); opacity:0.10; }
+}
+@keyframes starTwinkle {
+  0%   { filter:brightness(0.7); opacity:0.25; }
+  100% { filter:brightness(1.4); opacity:0.45; }
+}
+@keyframes starDrift {
+  0%   { transform:translate3d(0,0,0); }
+  100% { transform:translate3d(-20px,-10px,0); }
+}
+@keyframes pollenRise {
+  0%   { transform:translateY(8px); opacity:0.10; }
+  50%  { transform:translateY(-8px); opacity:0.22; }
+  100% { transform:translateY(8px); opacity:0.12; }
+}
+@keyframes leafFall {
+  0%   { background-position:0 -60px, 0 -40px; }
+  100% { background-position:0 100vh, 0 100vh; }
+}
+@keyframes leafDrift {
+  0%   { transform:translateX(0); }
+  50%  { transform:translateX(6px); }
+  100% { transform:translateX(0); }
+}
+
+/* -----------------------------------------
+   Stable Mode Kill Switch
+   (no motion when Stable mode)
+   ----------------------------------------- */
+body:not(.mode-lively) .scene,
+body:not(.mode-lively) .scene *,
+body:not(.mode-lively) .scene::before,
+body:not(.mode-lively) .scene::after {
+  animation: none !important;
+  transition: none !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+/* -----------------------------------------
+   Responsive tweaks
+   ----------------------------------------- */
+@media (max-width: 680px) {
+  .control-panel {
+    width: calc(100vw - 20px);
+    padding: 14px;
+  }
+
+  .top-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .navigation {
+    gap: 12px;
+  }
+
+  .volume-section {
+    grid-template-columns: 1fr;
+  }
+
+  .nature-header h1 {
+    font-size: 1rem;
+  }
+}

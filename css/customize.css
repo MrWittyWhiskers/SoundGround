@@ -1,0 +1,1032 @@
+/* ======================
+   0. Reset & Base Styles
+   ====================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--bg-main);
+  color: var(--text-main);
+  font-family: var(--font-main);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* ======================
+   1. Header
+   ====================== */
+header {
+  padding: 10px 20px;
+  background: var(--header-bg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  position: sticky;
+  top: 0;
+  z-index: 5000;
+  border-bottom: 1px solid var(--header-border);
+  box-shadow: 0 0 16px var(--header-glow);
+  backdrop-filter: blur(10px);
+  transition: background .30s ease, color .30s ease;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 1.5em;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--text-main);
+  text-shadow: 0 2px 6px var(--accent-soft);
+}
+
+#header-recorder-controls,
+#user-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.home-btn {
+  padding: 6px 14px;
+  font-size: 1rem;
+  border-radius: var(--radius);
+  background: var(--btn-bg);
+  border: 1px solid var(--panel-border);
+  color: white;
+  text-decoration: none;
+  box-shadow: var(--shadow-glow);
+  transition: var(--transition);
+}
+.home-btn:hover {
+  background: var(--btn-hover-bg);
+  box-shadow: 0 0 18px var(--accent-glow);
+}
+
+/* ======================
+   2. Buttons
+   ====================== */
+button {
+ padding: 10px 20px;
+  min-height: 44px;
+  border-radius: var(--radius);
+  background: var(--btn-bg);
+  border: 1px solid var(--panel-border);
+  box-shadow: var(--shadow-glow);
+  color: var(--btn-text);
+  cursor: pointer;
+  font-weight: 600;
+  transition: var(--transition);
+}
+button:hover {
+  background: var(--btn-hover-bg);
+  box-shadow: 0 0 20px var(--accent-glow);
+}
+button:active {
+  box-shadow: 0 3px 8px rgba(0, 188, 212, 0.35);
+}
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+button:focus-visible {
+  outline: 3px solid #00e5ff;
+  outline-offset: 2px;
+}
+
+#login-btn {
+  background: #ff4081;
+  box-shadow: 0 4px 10px rgba(255, 64, 129, 0.4);
+}
+#login-btn:hover {
+  background: #e91e63;
+  box-shadow: 0 6px 14px rgba(255, 64, 129, 0.5);
+}
+
+#logout-btn {
+  background: #f44336;
+  box-shadow: 0 4px 10px rgba(244, 67, 54, 0.4);
+}
+#logout-btn:hover {
+  background: #d32f2f;
+  box-shadow: 0 6px 14px rgba(244, 67, 54, 0.5);
+}
+
+#random {
+  background: #ffeb3b;
+  color: #1a1a2e;
+  font-weight: 700;
+  font-size: 1.1em;
+  padding: 12px 25px;
+  margin: 20px auto;
+  display: block;
+  box-shadow: 0 6px 14px rgba(255, 235, 59, 0.4);
+}
+#random:hover {
+  background: #ffe033;
+  box-shadow: 0 8px 18px rgba(255, 235, 59, 0.5);
+}
+
+/* ======================
+   3. Layout & Panels
+   ====================== */
+#main-content {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.control-panel,
+#recorder-panel,
+#presets-panel,
+.upload-panel,
+.synth-module,
+.effect-controls,
+#recording-controls,
+#recordings-list-container {
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft), var(--shadow-glow);
+  padding: 20px;
+  margin: 15px auto;
+  width: 100%;
+}
+
+.synth-module,
+.effect-controls,
+.upload-panel,
+#recording-controls {
+  background:  #005466;
+  border-radius: 10px;
+  border: 1px solid #00bcd4;
+  box-shadow: 0 12px 24px rgba(0, 188, 212, 0.04);
+  margin-top: 10px;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.synth-module h4 {
+  color: #00bcd4;
+  margin-bottom: 12px;
+  font-size: 0.9em;
+  border-bottom: 2px solid #00bcd4;
+  padding-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ======================
+   4. Grids & Controls
+   ====================== */
+.control-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  align-items: start;
+}
+.effect-toggle {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+/* ======================
+   5. Form Elements
+   ====================== */
+label {
+  display: block;
+  margin-bottom: 12px;
+  color: var(--text-secondary);
+  font-weight: 500;
+  width: 100%;
+}
+
+input[type="number"],
+input[type="text"],
+select {
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  color: var(--text-main);
+  transition: var(--transition);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 1em;
+  width: 100%;
+  margin-top: 5px;
+  box-sizing: border-box;
+}
+input[type="number"]:focus,
+input[type="text"]:focus,
+select:focus {
+  border-color: #80deea;
+  outline: 2px solid var(--accent);
+  box-shadow: 0 0 10px var(--accent-soft);
+}
+/* floating" sliders */
+input[type="range"] {
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  outline: none;
+  margin-top: 8px;
+
+  -webkit-appearance: none;
+  appearance: none;
+  transition: box-shadow .15s ease;
+}
+
+/* Chrome / Edge / Safari thumb */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid white;
+  margin-top: -6px;
+  box-shadow: 0 0 8px var(--accent-glow);
+  cursor: pointer;
+  transition: box-shadow .15s ease, transform .1s ease;
+}
+
+/* Firefox thumb */
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid #00bcd4;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4), 0 0 8px rgba(0,188,212,0.6);
+  cursor: pointer;
+  transition: box-shadow .15s ease, transform .1s ease;
+}
+
+/* hover / active feedback */
+input[type="range"]:hover::-webkit-slider-thumb,
+input[type="range"]:hover::-moz-range-thumb {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.6), 0 0 10px rgba(0,188,212,0.9);
+}
+
+input[type="range"]:active::-webkit-slider-thumb,
+input[type="range"]:active::-moz-range-thumb {
+  transform: scale(1.05);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.8), 0 0 12px rgba(0,188,212,1);
+}
+
+/* ======================
+   6. Keyboard
+   ====================== */
+#keyboard {
+  display: flex;
+  justify-content: center;
+  margin: 30px auto;
+  position: relative;
+  width: fit-content;
+  background: var(--panel-bg);
+  border-radius: 15px;
+  padding: 15px;
+  border: 1px solid var(--panel-border);
+  max-width: 100%;
+  overflow: hidden;
+  height: 200px;
+  box-shadow: var(--shadow-soft);
+}
+
+.key {
+  border: 1px solid #333;
+  border-radius: 0 0 8px 8px;
+  cursor: pointer;
+  font-size: 0.8em;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  padding-bottom: 8px;
+  user-select: none;
+  position: relative;
+  flex-shrink: 0;
+  transition: background .12s ease, box-shadow .12s ease;
+}
+
+.key.white {
+  background: white;
+  color: #1a1a2e;
+  width: 45px;
+  height: 100%;
+  z-index: 1;
+  margin-right: -1px;
+}
+.key.black {
+  background: black;
+  color: #e0f7fa;
+  width: 28px;
+  height: 60%;
+  z-index: 2;
+  position: absolute;
+}
+.key.key-active {
+  background: var(--accent);
+  box-shadow: 0 0 14px var(--accent-glow);
+  outline: 2px solid white;
+}
+.key.black.key-active {
+  background: #555;
+  box-shadow: 0 0 14px var(--accent-glow);
+}
+
+/* ======================
+   7. Pads / Upload / Presets
+   ====================== */
+#sample-area-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  width: 100%;
+}
+
+#pads-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.sample-pad {
+  aspect-ratio: 1;
+  background: var(--panel-bg);
+  border: 2px solid var(--panel-border);
+  color: var(--text-main);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3em;
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+  min-height: 80px;
+  box-shadow: 0 12px 24px rgba(0, 188, 212, 0.04);
+}
+.sample-pad:hover {
+  background: var(--accent);
+  color: white;
+  box-shadow: 0 0 12px var(--accent-glow);
+}
+.sample-pad.active {
+  background: var(--accent);
+  color: white;
+}
+
+.pad-name {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  right: 5px;
+  font-size: 0.7em;
+  font-weight: 600;
+  color: #e0f7fa;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 3px 6px;
+  border-radius: 4px;
+  text-align: center;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ======================
+   8. Recorder / Preset List
+   ====================== */
+#presets-panel,
+#recorder-panel {
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  transition: var(--transition);
+  border-radius: 15px;
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 900px;
+  box-shadow: 0 20px 40px rgba(0, 188, 212, 0.08);
+}
+
+#presets-panel h3,
+#recorder-panel h3 {
+  color: #00bcd4;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+#presets-list,
+#recordings-list {
+  list-style: none;
+  margin-top: 12px;
+}
+
+#presets-list li,
+#recordings-list li {
+  background: #2d3748;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  border-radius: 6px;
+  border: 1px solid #00bcd4;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+#presets-list li:hover,
+#recordings-list li:hover {
+  background: var(--accent);
+  color: white;
+}
+
+audio {
+  width: 100%;
+  margin: 12px 0;
+  border-radius: 8px;
+}
+
+#recording-name {
+  background: #0f0f1a;
+  color: #e0f7fa;
+  border: 2px solid #00bcd4;
+  border-radius: 8px;
+  padding: 10px 15px;
+  font-size: 1em;
+  flex: 1;
+  min-width: 250px;
+  transition: all 0.3s ease;
+}
+#recording-name:focus {
+  outline: none;
+  border-color: #80deea;
+  box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.1);
+}
+
+#download-btn {
+  background: #4caf50;
+  color: white;
+}
+#download-btn:hover {
+  background: #45a049;
+}
+#save-recording-btn {
+  background: #ff9800;
+  color: #000;
+}
+#save-recording-btn:hover {
+  background: #ffb347;
+}
+
+/* ======================
+   9. Responsive Design
+   ====================== */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+    padding: 12px 15px;
+  }
+  header h1 { font-size: 1.5rem; }
+  #keyboard { height: 160px; padding: 12px; }
+  .key.white { width: 35px; }
+  .key.black { width: 22px; }
+  #main-content { padding: 15px; }
+  #sample-area-container { grid-template-columns: 1fr; gap: 15px; }
+  .control-group { grid-template-columns: 1fr; gap: 12px; }
+  .effect-toggle { grid-template-columns: 1fr; gap: 8px; }
+  #recording-controls div {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  #pads-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  #keyboard { height: 140px; }
+  .key.white { width: 30px; }
+  .key.black { width: 18px; }
+  header { padding: 10px; }
+  header h1 { font-size: 1.3rem; }
+  button { padding: 8px 16px; font-size: 0.9em; }
+}
+
+/* ============ PRESET / MODE SLIDER ============ */
+
+.mode-panel {
+  margin-bottom: 12px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: #111;
+  border: 1px solid #333;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mode-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: #fbbf24;
+}
+
+#mode-slider {
+  flex: 1;
+}
+
+#mode-name {
+  font-weight: 600;
+  color: #ffcc00;
+}
+
+.mode-hint {
+  font-size: 0.75rem;
+  color: #888;
+}
+
+/* ============ GOJUON MODE STYLES ============ */
+
+/* --- Consistent cell sizing --- */
+.gojuon-wrapper {
+  --cell-w: 40px;
+  --cell-h: 36px;
+  --gap: 6px;
+}
+
+/* columns flow right→left  */
+.gojuon-grid {
+  display: grid;
+  grid-auto-flow: column;          /* build columns */
+  grid-auto-columns: max-content;  /* each column as wide as its content */
+  column-gap: 10px;
+  direction: rtl;                  /* first column on the right */
+  flex-wrap: unset;                
+  min-width: max-content;
+}
+
+/* Each column becomes a 6-row grid */
+.gojuon-row {
+  display: grid;
+  grid-template-rows: var(--cell-h) repeat(5, var(--cell-h));
+  row-gap: var(--gap);
+  justify-items: center;
+  align-items: center;
+}
+
+/* Label behaves like a cell */
+.row-label {
+  writing-mode: vertical-rl;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--cell-w);
+  height: var(--cell-h);
+  margin: 0;                    
+  font-size: 0.7rem;
+  color: #888;
+}
+
+/* Buttons and placeholders have identical size */
+.kana-key,
+.kana-empty {
+  width: var(--cell-w);
+  height: var(--cell-h);
+}
+
+/* Visible placeholders show text but look disabled */
+.kana-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.6;
+  color: #aaa;
+  border: 1px dashed #333;
+  border-radius: 4px;
+  background: #141414;
+  cursor: default;
+  visibility: visible;           /* IMPORTANT: make them visible */
+}
+
+/* button visuals */
+.kana-key {
+  padding: 0;
+  font-size: 1.1rem;
+  border-radius: 4px;
+  border: 1px solid #444;
+  background: radial-gradient(circle at 30% 30%, #333 0, #111 60%);
+  color: #eee;
+  cursor: pointer;
+  outline: none;
+  transition:
+    transform 0.06s ease,
+    background 0.12s ease,
+    box-shadow 0.12s ease,
+    border-color 0.12s ease;
+}
+
+.kana-key:hover {
+  border-color: #ffcc00;
+  box-shadow: 0 0 6px rgba(255,204,0,0.5);
+}
+
+.kana-key:active {
+  transform: translateY(1px) scale(0.97);
+  background: radial-gradient(circle at 70% 70%, #444 0, #111 60%);
+}
+
+.kana-key.has-audio {
+  border-color: #39abe0;
+  box-shadow: 0 0 6px rgba(97,151,202,0.6);
+}
+
+.kana-key.no-audio-flash {
+  border-color: #ff5555 !important;
+  box-shadow: 0 0 6px rgba(255,85,85,0.7) !important;
+}
+
+/* Wrapper scroll for overflow */
+.gojuon-wrapper {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* Mobile: shrink cells slightly, still perfectly aligned */
+@media (max-width: 720px) {
+  .gojuon-wrapper { --cell-w: 34px; --cell-h: 32px; --gap: 4px; }
+  .gojuon-grid { column-gap: 6px; }
+  .kana-key { font-size: 1rem; }
+}
+
+/* ===== Voice Chat Text Box ===== */
+.vc-text-wrap {
+  margin-top: 10px;
+}
+
+.vc-text-label {
+  font-size: 0.8rem;
+  color: #9ca3af;
+  margin-bottom: 4px;
+}
+
+.vc-text-box {
+  min-height: 60px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(148,163,184,0.7);
+  background: #020617;
+  color: #e5e7eb;
+  font-size: 0.9rem;
+  white-space: pre-wrap;
+}
+/* pads basic look */
+.game-pad {
+  background: rgba(15, 23, 42, 0.9);
+  border: 2px solid rgba(148, 163, 184, 0.8);
+  border-radius: 16px;
+  padding: 18px 10px;
+  font-size: 1rem;
+  color: #095163;
+  cursor: pointer;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.15);
+  transition: transform 0.1s ease,
+              box-shadow 0.1s ease,
+              border-color 0.1s ease,
+              background 0.1s ease,
+              opacity 0.1s ease;
+}
+
+.game-pad small {
+  font-size: 0.7rem;
+  opacity: 0.8;
+}
+
+.game-pad:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 18px rgba(56, 189, 248, 0.35);
+  border-color: #38bdf8;
+}
+
+/* pad's pattern */
+.game-pad-active {
+  background: radial-gradient(circle at center,
+                              #facc15 0%,
+                              #f97316 40%,
+                              #0f172a 100%);
+  box-shadow: 0 0 24px rgba(250, 204, 21, 0.9);
+  border-color: #fbbf24;
+}
+
+/* .game-pad:disabled {
+  opacity: 0.7;
+} */
+/* =================================================
+   CYBERPUNK BOOST 
+   ================================================= */
+
+/* --- Global background a bit more cyber --- */
+body {
+  background:
+    radial-gradient(circle at 10% 0%, #2a0040 0, transparent 55%),
+    radial-gradient(circle at 90% 100%, #003150 0, transparent 60%),
+    radial-gradient(circle at 50% 50%, #020617 0, #020012 65%, #000 100%);
+  color: #38bdf8;
+  font-family: "Consolas", "Fira Code", "Segoe UI", sans-serif;
+}
+
+/* --- Header: more neon glass --- */
+header {
+  background: rgba(3, 7, 18, 0.9);
+  border-bottom: 1px solid rgba(56, 189, 248, 0.5);
+  box-shadow:
+    0 0 20px rgba(56, 189, 248, 0.35),
+    0 0 30px rgba(236, 72, 153, 0.25);
+  backdrop-filter: blur(12px);
+}
+
+header h1 {
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-shadow:
+    0 0 10px rgba(56, 189, 248, 0.8),
+    0 0 18px rgba(236, 72, 153, 0.7);
+}
+
+/* --- Global buttons: cyber pill style --- */
+button {
+  background: radial-gradient(circle at top, #22d3ee 0, #0f172a 60%);
+  border-radius: 999px;
+  border: 1px solid rgba(56, 189, 248, 0.9);
+  box-shadow:
+    0 0 14px rgba(56, 189, 248, 0.7),
+    0 0 22px rgba(236, 72, 153, 0.55);
+  font-family: "Consolas", "Fira Code", system-ui, sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+button:hover {
+  background: radial-gradient(circle at top, #f97316 0, #020617 70%);
+  box-shadow:
+    0 0 18px rgba(56, 189, 248, 0.9),
+    0 0 26px rgba(236, 72, 153, 0.7);
+}
+
+button:active {
+  transform: translateY(1px) scale(0.97);
+  box-shadow: 0 0 10px rgba(15, 23, 42, 0.9);
+}
+
+/* --- Game page container --- */ 
+#page-game {
+  max-width: 960px;
+  margin: 32px auto;
+  padding: 20px;
+  border-radius: 24px;
+  background:
+    linear-gradient(135deg, rgba(56, 189, 248, 0.08), rgba(236, 72, 153, 0.09)),
+    radial-gradient(circle at top left, rgba(56, 189, 248, 0.25), transparent 55%),
+    radial-gradient(circle at bottom right, rgba(236, 72, 153, 0.28), transparent 60%),
+    #020617;
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  box-shadow:
+    0 0 40px rgba(0, 0, 0, 0.9),
+    0 0 30px rgba(56, 189, 248, 0.4),
+    0 0 36px rgba(236, 72, 153, 0.35);
+  backdrop-filter: blur(12px);
+}
+
+/* inner wrapper for level-up flash */
+#game-container {
+  padding: 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.85));
+  position: relative;
+  overflow: hidden;
+}
+
+/* Level-up flash hook  */
+.level-up-flash {
+  box-shadow:
+    0 0 24px rgba(56, 189, 248, 1),
+    0 0 32px rgba(236, 72, 153, 0.95);
+  transition: box-shadow 0.25s ease-out;
+}
+
+/* optional scanlines */
+#game-container::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+    rgba(248, 250, 252, 0.05) 1px,
+    transparent 1px
+  );
+  background-size: 100% 2px;
+  opacity: 0.16;
+}
+
+/* --- Game pads: proper neon tiles --- */
+.game-pad {
+  width: 110px;
+  height: 110px;
+  margin: 8px;
+  border-radius: 18px;
+  background: radial-gradient(circle at 30% 30%, #1f2933, #020617 65%);
+  border: 2px solid rgba(148, 163, 184, 0.9);
+  box-shadow:
+    0 0 14px rgba(56, 189, 248, 0.4),
+    inset 0 0 16px rgba(0, 0, 0, 0.9);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  padding-bottom: 8px;
+  cursor: pointer;
+  position: relative;
+  transition:
+    transform 0.08s ease-out,
+    box-shadow 0.12s ease-out,
+    border-color 0.12s ease-out,
+    background 0.12s ease-out;
+}
+
+/* key label in the corner */
+.game-pad::after {
+  content: attr(data-key);
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  font-size: 0.7rem;
+  color: #f97316;
+  opacity: 0.85;
+}
+
+/* hover + active */
+.game-pad:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 18px rgba(56, 189, 248, 0.9),
+    0 0 24px rgba(236, 72, 153, 0.6);
+  border-color: #38bdf8;
+}
+
+.game-pad-active {
+  background: radial-gradient(circle at center, #facc15 0%, #f97316 40%, #020617 100%);
+  box-shadow:
+    0 0 24px rgba(250, 204, 21, 1),
+    0 0 30px rgba(56, 189, 248, 0.9);
+  border-color: #fbbf24;
+  transform: translateY(-3px) scale(1.02);
+}
+
+/* pads in a grid */
+.game-pad-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+/* --- Game status / result / stats --- */
+#game-status {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(56, 189, 248, 0.6);
+  color: #cbd5f5;
+  font-size: 0.9rem;
+  text-shadow: 0 0 6px rgba(56, 189, 248, 0.9);
+}
+
+#game-score,
+#game-level,
+#game-lives {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #22d3ee;
+  text-shadow: 0 0 10px rgba(34, 211, 238, 0.9);
+}
+
+#game-highscore,
+#game-combo,
+#game-max-combo {
+  margin-top: 6px;
+  font-size: 0.85rem;
+  color: #9ca3af;
+  text-shadow: 0 0 8px rgba(56, 189, 248, 0.7);
+}
+
+/* final result panel */
+#game-result.game-result-box {
+  margin-top: 14px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background:
+    linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(236, 72, 153, 0.2));
+  border: 1px solid rgba(56, 189, 248, 0.7);
+  color: #e5e7eb;
+  font-size: 0.9rem;
+  box-shadow:
+    0 0 18px rgba(56, 189, 248, 0.6),
+    0 0 24px rgba(236, 72, 153, 0.65);
+}
+
+/* --- Difficulty / sound mode selects --- */
+#game-sound-mode,
+#game-difficulty {
+  min-width: 150px;
+  padding: 6px 10px;
+  margin: 4px 10px 4px 0;
+  border-radius: 999px;
+  border: 1px solid rgba(56, 189, 248, 0.7);
+  background: rgba(15, 23, 42, 0.95);
+  color: #e5e7eb;
+  font-family: "Consolas", "Fira Code", system-ui, sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.5);
+  outline: none;
+  appearance: none;
+  position: relative;
+}
+
+/* custom dropdown arrow */
+#game-sound-mode,
+#game-difficulty {
+  background-image:
+    linear-gradient(45deg, #22d3ee 50%, transparent 50%),
+    linear-gradient(135deg, #22d3ee 50%, transparent 50%);
+  background-position:
+    calc(100% - 16px) 50%,
+    calc(100% - 10px) 50%;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+}
+
+#game-sound-mode:hover,
+#game-difficulty:hover {
+  border-color: #f97316;
+  box-shadow:
+    0 0 16px rgba(56, 189, 248, 0.9),
+    0 0 18px rgba(236, 72, 153, 0.8);
+}
+
+/* --- Game control buttons  --- */
+#game-start,
+#game-reset,
+#game-pause,
+#game-resume {
+  min-width: 110px;
+  padding: 8px 16px;
+  margin: 4px;
+  font-size: 0.75rem;
+}
+
+#game-start,
+#game-resume {
+  border-color: #22d3ee;
+}
+
+#game-reset,
+#game-pause {
+  border-color: #ec4899;
+  box-shadow:
+    0 0 14px rgba(236, 72, 153, 0.9),
+    0 0 20px rgba(56, 189, 248, 0.6);
+}
+
+/* --- Responsive tweaks only for game pieces --- */
+@media (max-width: 768px) {
+  .game-pad {
+    width: 90px;
+    height: 90px;
+    margin: 6px;
+  }
+  #game-start,
+  #game-reset,
+  #game-pause,
+  #game-resume {
+    min-width: 90px;
+    font-size: 0.7rem;
+    padding: 6px 12px;
+  }
+}
