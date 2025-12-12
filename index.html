@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Choose ur mode</title>
+  <link rel="stylesheet" href="css/customize.css">
+  <link rel="stylesheet" href="css/theme.css">
+
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <a href="home.html" class="home-btn">🏠ホーム</a>
+    <button id="theme-toggle">🌓テーマ切替</button>
+  </div>
+
+  <h1>スライトでモードの選択</h1>
+
+  <div class="header-right">
+    <div id="header-recorder-controls">
+      <button id="record-btn">🔴 録音</button>
+      <button id="stop-btn" disabled>⏹️ 停止</button>
+    </div>
+    <div id="user-controls">
+      <div id="user-info" style="display: none;">
+        <span id="user-name"></span>
+        <button id="logout-btn">ログアウト</button>
+      </div>
+      <button id="login-btn">Googleでログイン</button>
+    </div>
+  </div>
+</header>
+
+<div id="main-content">
+
+  <!-- === PRESET / MODE SLIDER (0: synth / 1: gojuon / 2: game) === -->
+  <div class="control-panel mode-panel">
+    <label class="mode-label">
+      モード
+      <input type="range" id="mode-slider" min="0" max="2" step="1" value="0">
+      <span id="mode-name">🎛 8bitシンセ</span>
+    </label>
+    <p class="mode-hint">0: 8bitシンセ / 1: 五十音モード / 2: リズム＋ボイス</p>
+  </div>
+
+  <!-- ==========================
+       PAGE 0: 8bit SYNTH
+       ========================== -->
+  <div id="page-synth" class="mode-page mode-page-active">
+  
+    <div class="control-panel">
+      <h2>8bitシンセサイザー</h2>
+      <div class="control-group">
+        <label>BPM:
+          <input type="number" id="bpm" value="120" min="40" max="300">
+        </label>
+        <label>Master Volume:
+          <input type="range" id="master-volume" min="0" max="2" step="0.01" value="1">
+        </label>
+        <label>キー:
+          <select id="key-selector">
+            <option value="ド">C</option>
+            <option value="ド#">C#</option>
+            <option value="レ">D</option>
+            <option value="レ#">D#</option>
+            <option value="ミ">E</option>
+            <option value="ファ">F</option>
+            <option value="ファ#">F#</option>
+            <option value="ソ">G</option>
+            <option value="ソ#">G#</option>
+            <option value="ラ">A</option>
+            <option value="ラ#">A#</option>
+            <option value="シ">B</option>
+          </select>
+        </label>
+        <label>
+          <input type="checkbox" id="toggle-pentatonic"> ペンタトニック
+        </label>
+      </div>
+    </div>
+
+    <div class="control-panel">
+      <div class="control-group">
+        <div class="synth-module">
+          <h4>OSCILLATOR</h4>
+          <label>Wave:
+            <select id="osc-waveform">
+              <option value="square">Square</option>
+              <option value="sawtooth">Sawtooth</option>
+              <option value="triangle">Triangle</option>
+              <option value="sine">Sine</option>
+            </select>
+          </label>
+          <label>PWM Depth:
+            <input title="四角波(Square)選択時のみ有効"
+                   type="range" id="osc-pwm"
+                   min="0" max="0.5" step="0.01" value="0">
+          </label>
+        </div>
+
+        <div class="synth-module">
+          <h4>ENVELOPE (ADSR)</h4>
+          <label>A:
+            <input type="range" id="env-attack" min="0.01" max="2" step="0.01" value="0.01">
+          </label>
+          <label>D:
+            <input type="range" id="env-decay" min="0.01" max="2" step="0.01" value="0.1">
+          </label>
+          <label>S:
+            <input type="range" id="env-sustain" min="0" max="1" step="0.01" value="0.8">
+          </label>
+          <label>R:
+            <input type="range" id="env-release" min="0.01" max="3" step="0.01" value="0.1">
+          </label>
+        </div>
+
+        <div class="synth-module">
+          <h4>LFO</h4>
+          <label>Rate:
+            <input type="range" id="lfo-rate" min="0.1" max="20" step="0.1" value="5">
+          </label>
+          <label>Pitch:
+            <input type="range" id="lfo-pitch" min="0" max="50" step="1" value="0">
+          </label>
+          <label>Filter:
+            <input type="range" id="lfo-filter" min="0" max="5000" step="10" value="0">
+          </label>
+          <label>Amp:
+            <input type="range" id="lfo-amp" min="0" max="1" step="0.01" value="0">
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="control-panel">
+      <div class="effect-toggle">
+        <label><input type="checkbox" id="toggle-distortion"> ディストーション</label>
+        <label><input type="checkbox" id="toggle-bitcrusher"> ビットクラッシャー</label>
+        <label><input type="checkbox" id="toggle-lofi"> ローファイ</label>
+        <label><input type="checkbox" id="toggle-filter"> フィルター</label>
+      </div>
+      <div class="effect-toggle">
+        <label><input type="checkbox" id="toggle-slicer"> スライサー</label>
+        <label><input type="checkbox" id="toggle-unyounyo"> うにょうにょ</label>
+        <label><input type="checkbox" id="toggle-flanger"> フランジャー</label>
+        <label><input type="checkbox" id="toggle-delay"> ディレイ</label>
+        <label><input type="checkbox" id="toggle-reverb"> リバーブ</label>
+      </div>
+
+      <div id="distortion-controls" class="effect-controls" style="display:none;">
+        <label>Gain:
+          <input type="range" id="distortion-gain" min="1" max="50" step="1" value="10">
+        </label>
+        <label>Treble:
+          <input type="range" id="distortion-treble" min="-10" max="10" step="0.5" value="0">
+        </label>
+        <label>Mid Freq:
+          <input type="range" id="distortion-mid-freq" min="400" max="1500" step="10" value="1000">
+        </label>
+        <label>Mid Cut:
+          <input type="range" id="distortion-mid-cut" min="-20" max="0" step="1" value="-6">
+        </label>
+      </div>
+
+      <div id="bitcrusher-controls" class="effect-controls" style="display:none;">
+        <label>Bits (Depth):
+          <input type="range" id="bitcrusher-depth" min="1" max="24" step="1" value="8">
+        </label>
+        <label>Rate Divide:
+          <input type="range" id="bitcrusher-rate" min="1" max="50" step="1" value="10">
+        </label>
+      </div>
+
+      <div id="lofi-controls" class="effect-controls" style="display:none;">
+        <label>Muffle (Hz):
+          <input type="range" id="lofi-muffle" min="1000" max="8000" step="100" value="2500">
+        </label>
+        <label>Hiss:
+          <input type="range" id="lofi-hiss" min="0" max="0.1" step="0.01" value="0.02">
+        </label>
+      </div>
+
+      <div id="filter-controls" class="effect-controls" style="display:none;">
+        <label>Cutoff (Hz):
+          <input type="range" id="filter-cutoff" min="20" max="10000" step="10" value="2000">
+        </label>
+        <label>Resonance (Q):
+          <input type="range" id="filter-resonance" min="0.1" max="20" step="0.1" value="1">
+        </label>
+      </div>
+
+      <div id="slicer-controls" class="effect-controls" style="display:none;">
+        <label>Rate:
+          <select id="slicer-rate">
+            <option value="4">4分</option>
+            <option value="8" selected>8分</option>
+            <option value="16">16分</option>
+            <option value="8d">付点8分</option>
+          </select>
+        </label>
+        <label>Mix:
+          <input type="range" id="slicer-mix" min="0" max="1" step="0.01" value="0.5">
+        </label>
+      </div>
+
+      <div id="unyounyo-controls" class="effect-controls" style="display:none;">
+        <label>Pitch:
+          <input type="range" id="unyounyo-pitch" min="0" max="2" step="0.01" value="1.0">
+        </label>
+        <label>Mix:
+          <input type="range" id="unyounyo-mix" min="0" max="1" step="0.01" value="0.5">
+        </label>
+      </div>
+
+      <div id="flanger-controls" class="effect-controls" style="display:none;">
+        <label>Rate:
+          <select id="flanger-rate">
+            <option value="8">8分</option>
+            <option value="4" selected>4分</option>
+            <option value="2">2分</option>
+          </select>
+        </label>
+        <label>Depth:
+          <input type="range" id="flanger-depth" min="0" max="0.01" step="0.001" value="0.005">
+        </label>
+        <label>Mix:
+          <input type="range" id="flanger-mix" min="0" max="1" step="0.01" value="0.5">
+        </label>
+      </div>
+
+      <div id="delay-controls" class="effect-controls" style="display:none;">
+        <label>Time:
+          <select id="delay-time">
+            <option value="4">4分</option>
+            <option value="8" selected>8分</option>
+            <option value="8d">付点8分</option>
+            <option value="16">16分</option>
+          </select>
+        </label>
+        <label>Feedback:
+          <input type="range" id="delay-feedback" min="0" max="0.9" step="0.01" value="0.4">
+        </label>
+        <label>Mix:
+          <input type="range" id="delay-mix" min="0" max="1" step="0.01" value="0.5">
+        </label>
+      </div>
+
+      <div id="reverb-controls" class="effect-controls" style="display:none;">
+        <label>Mix:
+          <input type="range" id="reverb-mix" min="0" max="1" step="0.01" value="0.3">
+        </label>
+        <label>Time:
+          <input type="range" id="reverb-time" min="0.2" max="1.0" step="0.01" value="0.5">
+        </label>
+        <label>Decay:
+          <input type="range" id="reverb-decay" min="0" max="0.9" step="0.01" value="0.5">
+        </label>
+      </div>
+    </div>
+
+    <div id="keyboard"></div>
+    <button id="random">ランダム音 長押し</button>
+
+    <div class="control-panel" id="sample-area-container">
+      <div class="sample-column">
+        <div class="upload-panel">
+          <div>
+            <label>サンプル音源:
+              <input type="file" id="upload" accept="audio/*" multiple>
+            </label>
+            <p>最大9個まで。複数ファイルを選択して一括登録できます。</p>
+          </div>
+        </div>
+        <div id="pads-container"></div>
+      </div>
+
+      <div class="sample-column">
+        <div class="sample-controls">
+          <h3>SAMPLES (<span id="pad-counter">0/9</span>)</h3>
+          <div style="margin-bottom: 10px;">
+            <label>Pitch:
+              <span id="pitch-shift-display"
+                    style="font-weight: bold; font-size: 1.2em; color: #ffcc00;">0</span> st
+            </label>
+            <button id="reset-pitch"
+                    style="padding: 5px 10px; font-size: 0.9em; margin-left: 10px; background-color: #555; color: #fff;">
+              Reset
+            </button>
+          </div>
+          <label>音量:
+            <input type="range" id="uploadedVolume" min="0" max="10" step="0.01" value="1">
+          </label>
+          <br>
+          <label style="margin-top: 10px; display: inline-block;">
+            <input type="checkbox" id="toggle-pad-polyphony" checked> パッド音を重ねる
+          </label>
+        </div>
+
+        <div id="presets-panel">
+          <h3>パッドプリセット</h3>
+          <p id="preset-login-prompt" style="color: #ffcc00; display: none;">
+            プリセットの保存・読込をするにはログインしてください。
+          </p>
+          <div id="preset-controls">
+            <input type="text" id="preset-name" placeholder="プリセット名を入力">
+            <button id="save-preset-btn">現在のパッドを保存</button>
+          </div>
+          <ul id="presets-list"></ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="control-panel" id="recorder-panel">
+      <h3>レコーダー</h3>
+      <div id="recording-controls" style="display: none; margin-top: 15px;">
+        <audio id="recording-player" controls></audio>
+        <div>
+          <button id="download-btn">💾 ダウンロード</button>
+          <input type="text" id="recording-name" placeholder="録音名を入力" style="margin: 0 10px;">
+          <button id="save-recording-btn">☁️ クラウドに保存</button>
+        </div>
+      </div>
+      <div id="recordings-list-container" style="margin-top: 15px;">
+        <h4>保存した録音</h4>
+        <ul id="recordings-list"></ul>
+      </div>
+    </div>
+
+  </div><!-- /#page-synth -->
+
+  <!-- ==========================
+       PAGE 1: GOJUON MODE
+       ========================== -->
+  <section id="page-gojuon" class="mode-page" style="display:none;">
+    <div class="control-panel gojuon-mode">
+      <div class="gojuon-header">
+        <h2> 五十音サウンドボード</h2>
+        <p class="gojuon-sub">自分の音声を、各ひらがなキーに割り当てて再生できます。</p>
+      </div>
+
+      <div class="gojuon-panel">
+        <div class="gojuon-top-row">
+          <div class="gojuon-upload">
+            <label>
+              サンプル音源（複数可）:
+              <input id="gojuon-file-input" type="file" accept=".mp3,.wav,.ogg" multiple>
+            </label>
+            <p class="gojuon-hint">
+              ファイル名に「あ」「い」「が」などの文字を含めると自動割り当てされます。<br>
+              （例）<code>あ.mp3</code> / <code>か_01.wav</code> / <code>ぎ_hello.ogg</code>
+            </p>
+          </div>
+
+          <div class="gojuon-volume-wrap">
+            <label for="gojuon-volume">
+              ボリューム:
+              <span id="gojuon-volume-value">100%</span>
+            </label>
+            <div class="gojuon-volume-row">
+              <input id="gojuon-volume" type="range" min="0" max="1" step="0.01" value="1">
+            </div>
+          </div>
+        </div>
+
+        <div class="gojuon-wrapper">
+          <p class="gojuon-desc">ひらがなをクリックすると、割り当てた音声が再生されます。</p>
+
+          <div class="gojuon-grid">
+            <!-- ===== 清音 あ〜わ 行 ===== -->
+            <div class="gojuon-row">
+              <span class="row-label">あ</span>
+              <button class="kana-key" data-hira="あ">あ</button>
+              <button class="kana-key" data-hira="い">い</button>
+              <button class="kana-key" data-hira="う">う</button>
+              <button class="kana-key" data-hira="え">え</button>
+              <button class="kana-key" data-hira="お">お</button>
+            </div>
+
+            <div class="gojuon-row">
+              <span class="row-label">か</span>
+              <button class="kana-key" data-hira="か">か</button>
+              <button class="kana-key" data-hira="き">き</button>
+              <button class="kana-key" data-hira="く">く</button>
+              <button class="kana-key" data-hira="け">け</button>
+              <button class="kana-key" data-hira="こ">こ</button>
+            </div>
+
+            <div class="gojuon-row">
+              <span class="row-label">さ</span>
+              <button class="kana-key" data-hira="さ">さ</button>
+              <button class="kana-key" data-hira="し">し</button>
+              <button class="kana-key" data-hira="す">す</button>
+              <button class="kana-key" data-hira="せ">せ</button>
+              <button class="kana-key" data-hira="そ">そ</button>
+            </div>
+
+            <div class="gojuon-row">
+              <span class="row-label">た</span>
+              <button class="kana-key" data-hira="た">た</button>
+              <button class="kana-key" data-hira="ち">ち</button>
+              <button class="kana-key" data-hira="つ">つ</button>
+              <button class="kana-key" data-hira="て">て</button>
+              <button class="kana-key" data-hira="と">と</button>
+            </div>
+
+            <div class="gojuon-row">
+              <span class="row-label">な</span>
+              <button class="kana-key" data-hira="な">な</button>
+              <button class="kana-key" data-hira="に">に</button>
+              <button class="kana-key" data-hira="ぬ">ぬ</button>
+              <button class="kana-key" data-hira="ね">ね</button>
+              <button class="kana-key" data-hira="の">の</button>
+            </div>
+
+            <div class="gojuon-row">
+              <span class="row-label">は</span>
+              <button class="kana-key" data-hira="は">は</button>
+              <button class="kana-key" data-hira="ひ">ひ</button>
+              <button class="kana-key" data-hira="ふ">ふ</button>
+              <button class="kana-key" data-hira="へ">へ</button>
+              <button class="kana-key" data-hira="ほ">ほ</button>
+            </div>
+
+            <div class="gojuon-row">
+              <span class="row-label">ま</span>
+              <button class="kana-key" data-hira="ま">ま</button>
+              <button class="kana-key" data-hira="み">み</button>
+              <button class="kana-key" data-hira="む">む</button>
+              <button class="kana-key" data-hira="め">め</button>
+              <button class="kana-key" data-hira="も">も</button>
+            </div>
+
+            <div class="gojuon-row">
+              <span class="row-label">や</span>
+              <button class="kana-key" data-hira="や">や</button>
+              <span class="kana-empty"></span>
+              <button class="kana-key" data-hira="ゆ">ゆ</button>
+              <span class="kana-empty"></span>
+              <button class="kana-key" data-hira="よ">よ</button>
+            </div>
+
+            <div class="gojuon-row">
+              <span class="row-label">ら</span>
+              <button class="kana-key" data-hira="ら">ら</button>
+              <button class="kana-key" data-hira="り">り</button>
+              <button class="kana-key" data-hira="る">る</button>
+              <button class="kana-key" data-hira="れ">れ</button>
+              <button class="kana-key" data-hira="ろ">ろ</button>
+            </div>
+
+            <div class="gojuon-row">
+              <span class="row-label">わ</span>
+              <button class="kana-key" data-hira="わ">わ</button>
+              <span class="kana-empty"></span>
+              <span class="kana-empty"></span>
+              <button class="kana-key" data-hira="を">を</button>
+              <button class="kana-key" data-hira="ん">ん</button>
+            </div>
+
+            <!-- ===== 濁音 ===== -->
+            <div class="gojuon-row">
+              <span class="row-label">が</span>
+              <button class="kana-key" data-hira="が">が</button>
+              <button class="kana-key" data-hira="ぎ">ぎ</button>
+              <button class="kana-key" data-hira="ぐ">ぐ</button>
+              <button class="kana-key" data-hira="げ">げ</button>
+              <button class="kana-key" data-hira="ご">ご</button>
+            </div>
+
+            <div class="gojuon-row">
+              <span class="row-label">ざ</span>
+              <button class="kana-key" data-hira="ざ">ざ</button>
+              <button class="kana-key" data-hira="じ">じ</button>
+              <button class="kana-key" data-hira="ず">ず</button>
+              <button class="kana-key" data-hira="ぜ">ぜ</button>
+              <button class="kana-key" data-hira="ぞ">ぞ</button>
+            </div>
+
+            <div class="gojuon-row">
+              <span class="row-label">だ</span>
+              <button class="kana-key" data-hira="だ">だ</button>
+              <span class="kana-empty" data-hira="ぢ">ぢ</span>
+              <span class="kana-empty" data-hira="づ">づ</span>
+              <button class="kana-key" data-hira="で">で</button>
+              <button class="kana-key" data-hira="ど">ど</button>
+            </div>
+
+            <div class="gojuon-row">
+              <span class="row-label">ば</span>
+              <button class="kana-key" data-hira="ば">ば</button>
+              <button class="kana-key" data-hira="び">び</button>
+              <button class="kana-key" data-hira="ぶ">ぶ</button>
+              <button class="kana-key" data-hira="べ">べ</button>
+              <button class="kana-key" data-hira="ぼ">ぼ</button>
+            </div>
+
+            <!-- ===== 半濁音 ===== -->
+            <div class="gojuon-row">
+              <span class="row-label">ぱ</span>
+              <button class="kana-key" data-hira="ぱ">ぱ</button>
+              <button class="kana-key" data-hira="ぴ">ぴ</button>
+              <button class="kana-key" data-hira="ぷ">ぷ</button>
+              <button class="kana-key" data-hira="ぺ">ぺ</button>
+              <button class="kana-key" data-hira="ぽ">ぽ</button>
+            </div>
+
+          </div><!-- /gojuon-grid -->
+        </div><!-- /gojuon-wrapper -->
+      </div><!-- /gojuon-panel -->
+    </div><!-- /control-panel (gojuon-mode) -->
+
+    <!-- text to voice -->
+    <div class="control-panel" id="tts-panel">
+      <h3>🎙 テキスト → ボイス</h3>
+      <p style="font-size:0.85rem; color:#9ca3af; margin-bottom:8px;">
+        日本語テキストを入力して、VOICEVOX風ボイスで再生します。
+      </p>
+
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <label>
+          話者:
+          <select id="ttsSpeakerSel" style="margin-top:4px;">
+            <option value="">読み込み中…</option>
+          </select>
+        </label>
+
+        <label>
+          テキスト:
+          <textarea id="ttsInput"
+            rows="3"
+            placeholder="ここにテキストを入力（例：こんにちは、テキスト読み上げテストです）"
+            style="margin-top:4px; resize:vertical; width:100%; padding:8px 10px; border-radius:10px; border:1px solid rgba(148,163,184,0.6); background:#020617; color:#f9fafb; font-size:0.9rem;"></textarea>
+        </label>
+
+        <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+          <button id="ttsBtn">▶ 再生</button>
+          <span id="ttsStatus" style="font-size:0.8rem; color:#9ca3af;">Idle.</span>
+        </div>
+
+        <audio id="ttsAudio" controls style="width:100%; margin-top:4px;"></audio>
+      </div>
+    </div>
+  </section><!-- /#page-gojuon -->
+
+  <!-- =========================
+       PAGE 2:  Voice Chat
+       ========================= -->
+  <!-- <section id="page-game" class="mode-page" style="display:none;"> -->
+
+    <!-- Voice Chat Panel -->
+    <!-- <div class="control-panel" id="voice-chat-panel">
+      <h3>💬 ボイスチャット (音声 → TTS)</h3>
+      <p style="font-size:0.85rem; color:#cbd5f5; margin-bottom:8px;">
+        マイクで話した内容を文字起こしして、下のテキスト読み上げ（TTS）パネルに送ります。
+      </p>
+
+      <div class="control-group">
+        <div>
+          <button id="vc-start">🎙 話す</button>
+          <button id="vc-stop" disabled>⏹ 停止</button>
+        </div>
+
+        <div>
+          <div style="font-size:0.8rem; color:#9ca3af;">状態</div>
+          <div id="vc-status" style="font-size:0.9rem; color:#e5e7eb;">
+            Idle.
+          </div>
+        </div>
+      </div>
+
+      <div class="vc-text-wrap">
+        <div class="vc-text-label">認識したテキスト</div>
+        <div id="vc-text" class="vc-text-box">
+          （ここにあなたの声がテキストとして出ます）
+        </div>
+      </div>
+
+      <div style="margin-top:10px; display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+        <button id="vc-to-tts">▶ テキスト読み上げパネルへ送る</button>
+        <span style="font-size:0.8rem; color:#9ca3af;">
+          既存の「テキスト → ボイス」パネルにコピーして読み上げます。
+        </span>
+      </div>
+    </div>
+
+  </section> -->
+  <!-- /#page-game -->
+
+    <!-- =========================
+       PAGE 2:  Melody Game
+       ========================= -->
+  <section id="page-game" class="mode-page" style="display:none;">
+
+    <div class="control-panel" id="melody-game-panel">
+      <h2>🎮 メロディゲーム</h2>
+      <p style="font-size:0.9rem; color:#0d0e11; margin-bottom:10px;">
+        パッドが光る順番を覚えて、同じ順番でクリックして再生しよう！<br>
+        レベルが上がるほど、音とパターンが長くなります。
+      </p>
+
+      <!-- 状態表示 -->
+      <div class="control-group" style="display:flex; gap:16px; flex-wrap:wrap;">
+        <div>
+          <div style="font-size:0.8rem; color:#555e6e;">レベル</div>
+          <div id="game-level" style="font-size:1.1rem; font-weight:bold;">0</div>
+        </div>
+        <div>
+          <div style="font-size:0.8rem; color:#9ca3af;">スコア</div>
+          <div id="game-score" style="font-size:1.1rem; font-weight:bold;">0</div>
+        </div>
+        <div>
+          <div style="font-size:0.8rem; color:#9ca3af;">ミス残り</div>
+          <div id="game-lives" style="font-size:1.1rem; font-weight:bold;">3</div>
+        </div>
+      </div>
+
+      <!-- コントロール -->
+      <div class="control-group" style="margin-top:12px; display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
+        <button id="game-start"> スタート</button>
+        <button id="game-pause">⏸ ストップ</button>
+        <button id="game-resume">▶ レジューム</button>
+        <button id="game-reset">⏹ リセット</button>
+
+        <label style="font-size:0.85rem;">
+          速度:
+          <input type="range" id="game-speed" min="0.4" max="1.4" step="0.1" value="1">
+          <span id="game-speed-label">ノーマル</span>
+        </label>
+
+        <label style="font-size:0.85rem; display:flex; align-items:center; gap:4px;">
+          <input type="checkbox" id="game-strict">
+          ストリクトモード（1ミスでゲームオーバー）
+        </label>
+      </div>
+
+      <!-- メッセージ -->
+      <div id="game-status"
+           style="margin-top:10px; font-size:0.9rem; color:#e5e7eb;">
+        「▶ スタート」を押してゲーム開始！
+      </div>
+
+      <!-- Difficulty -->
+      <select id="game-difficulty">
+        <option value="easy">ベーシック</option>
+        <option value="normal" selected>ノーマル</option>
+        <option value="hard">ハード</option>
+      </select>
+
+      <!-- Sound mode -->
+      <select id="game-sound-mode">
+        <option value="chip">レトロ</option>
+        <option value="soft">ソフト</option>
+        <option value="bright">ブライト</option>
+      </select>
+
+      <!-- High score / combo display -->
+      <div id="game-highscore"></div>
+      <div id="game-combo"></div>
+      <div id="game-max-combo"></div>
+
+      <!-- パッド -->
+      <div id="game-pad-grid"
+           style="margin-top:18px; display:grid; grid-template-columns:repeat(2, minmax(100px, 1fr)); gap:14px;">
+        <button class="game-pad" data-pad="0" data-note="261.63">
+          <span>Pad 1<br><small>[I]</small></span>
+        </button>
+        <button class="game-pad" data-pad="1" data-note="329.63">
+          <span>Pad 2<br><small>[O]</small></span>
+        </button>
+        <button class="game-pad" data-pad="2" data-note="392.00">
+          <span>Pad 3<br><small>[K]</small></span>
+        </button>
+        <button class="game-pad" data-pad="3" data-note="523.25">
+          <span>Pad 4<br><small>[L]</small></span>
+        </button>
+      </div>
+
+      <p style="margin-top:12px; font-size:0.8rem; color:#64676d;">
+        キーボードでも操作できます：I / O / K / L キー。<br>
+        パッドが光っている間はクリックできません。
+      </p>
+    </div>
+    <!-- Final result -->
+    <div id="game-result" class="game-result-box"></div>
+  </section><!-- /#page-game -->
+
+</div><!-- /#main-content -->
+
+<script src="js/main.js" type="module"></script>
+<script>
+document.getElementById("theme-toggle").addEventListener("click", () => {
+  document.body.classList.toggle("theme-cyber");
+  localStorage.setItem("theme", 
+      document.body.classList.contains("theme-cyber") ? "cyber" : "light");
+});
+
+// load saved theme
+if (localStorage.getItem("theme") === "cyber") {
+  document.body.classList.add("theme-cyber");
+}
+</script>
+
+</body>
+</html>

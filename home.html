@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SoundGround</title>
+<link rel="stylesheet" href="css/home.css">
+<link rel="stylesheet" href="css/theme.css">
+
+</head>
+<body class="fade-in">
+
+<!-- Header -->
+<header class="header">
+    <div class="logo">
+        <img src="img/wave-sound.png" alt="SoundGround Logo">
+        <h1>SoundGround</h1>
+    </div>
+    <nav>
+        <a href="home.html" class="active">ホーム</a>
+        <button id="theme-toggle">🌓テーマ切替</button>
+
+    </nav>
+</header>
+
+<!-- Hero Section -->
+<section class="hero">
+    <h2>音でリラックス</h2>
+    <p>ミュージックパックダウンロード不要</p>
+    <div class="button-container">
+        <a href="index.html" class="btn primary-btn">作る</a>
+        <a href="nature.html" class="btn secondary-btn">聞く</a>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features">
+    <div class="feature">
+        <h3>🎙️ 録音</h3>
+        <p>好きな音を残そう</p>
+    </div>
+    <div class="feature">
+        <h3>🌿 自然音</h3>
+        <p>心を落ち着ける</p>
+    </div>
+    <div class="feature">
+        <h3>🎧 カスタム</h3>
+        <p>自分だけの音空間</p>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <p>&copy; 2025 SoundGround</p>
+</footer>
+
+<script src="js/home.js"></script>
+<script>
+document.getElementById("theme-toggle").addEventListener("click", () => {
+  document.body.classList.toggle("theme-cyber");
+  localStorage.setItem("theme", 
+      document.body.classList.contains("theme-cyber") ? "cyber" : "light");
+});
+
+// load saved theme
+if (localStorage.getItem("theme") === "cyber") {
+  document.body.classList.add("theme-cyber");
+}
+</script>
+
+</body>
+</html>
