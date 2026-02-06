@@ -1,0 +1,742 @@
+/* =========================================================
+   Index / Create Page
+   ========================================================= */
+
+/* =========================================================
+   1. PAGE LAYOUT
+   ========================================================= */
+
+#main-content {
+  max-width: 1100px;
+  margin: 32px auto 80px;
+  padding: 0 24px;
+  margin-top: 36px; 
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+
+/* =========================================================
+   2. TOP BAR 
+   ========================================================= */
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--bg-main);
+  color: var(--text-main);
+  min-height: 100vh;
+  line-height: 1.6;
+  padding: 0;
+  margin: 0;
+}
+
+/* ======================
+   1. Header
+   ====================== */
+header {
+  padding: 10px 20px;
+  background: var(--header-bg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  position: sticky;
+  top: 0;
+  z-index: 5000;
+  border-bottom: 1px solid var(--header-border);
+  box-shadow:
+    0 6px 18px rgba(0,0,0,0.35),
+    0 0 10px var(--accent-soft);
+  backdrop-filter: blur(10px);
+  transition: background .30s ease, color .30s ease;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 1.5em;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--text-main);
+  text-shadow: 0 2px 6px var(--accent-soft);
+}
+
+#header-recorder-controls,
+#user-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.home-btn {
+  padding: 6px 14px;
+  font-size: 1rem;
+  border-radius: var(--radius);
+  background: var(--btn-bg);
+  border: 1px solid var(--panel-border);
+  color: white;
+  text-decoration: none;
+  box-shadow: var(--shadow-glow);
+  transition: var(--transition);
+}
+.home-btn:hover {
+  background: var(--btn-hover-bg);
+  box-shadow: 0 0 18px var(--accent-glow);
+}
+
+/* =========================================================
+   3. GLOBAL TYPOGRAPHY & READABILITY
+   ========================================================= */
+
+h2 {
+  font-size: 1.5rem;
+}
+
+label,
+.gojuon-desc,
+.gojuon-hint {
+  font-size: 0.85rem;
+}
+
+label {
+  font-weight: 600;
+  color: var(--text-soft);
+}
+
+.panel-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* =========================================================
+   4. MODE PANEL 
+   ========================================================= */
+
+.mode-label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#mode-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+}
+
+.mode-hint {
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  opacity: 0.6;
+  animation: hintPulse 2s infinite;
+}
+
+.mode-panel {
+  box-shadow:
+    0 0 26px var(--accent-glow),
+    0 14px 36px rgba(0,0,0,0.25);
+}
+
+@keyframes hintPulse {
+  0%,100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+/* =========================================================
+   5. MODE SLIDER 
+   ========================================================= */
+
+#mode-slider {
+  appearance: none;
+  width: 100%;
+  height: 14px;
+  border-radius: 999px;
+  margin: 14px 0 10px;
+
+  background: linear-gradient(
+    to right,
+    var(--accent) 0%,
+    var(--accent) 33%,
+    rgba(0,0,0,0.18) 33%,
+    rgba(0,0,0,0.18) 66%,
+    var(--accent) 66%,
+    var(--accent) 100%
+  );
+
+  box-shadow:
+inset 0 2px 6px rgba(0,0,0,0.25),
+    0 0 8px var(--accent-soft);
+}
+
+#mode-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 30%, #ffffff, var(--accent));
+  border: 2px solid rgba(255,255,255,0.85);
+  cursor: grab;
+
+  box-shadow:
+    0 0 20px var(--accent-glow),
+    0 6px 16px rgba(0,0,0,0.25);
+
+  transition: transform 0.15s ease;
+}
+
+#mode-slider:active::-webkit-slider-thumb {
+  cursor: grabbing;
+  transform: scale(1.1);
+}
+
+/* =========================================================
+   6. MODE ICONS & IDENTITY
+   ========================================================= */
+
+.mode-icons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+  padding: 0 8px;
+}
+
+.mode-icon {
+  font-size: 1.5rem;
+  opacity: 0.35;
+  transform: scale(0.9);
+  transition: transform 0.3s cubic-bezier(.34,1.56,.64,1),
+              opacity 0.3s ease,
+              filter 0.3s ease;
+}
+
+.mode-icon.active {
+  opacity: 1;
+  transform: scale(1.3);
+  filter: drop-shadow(0 0 16px var(--accent-glow));
+}
+
+.mode-identity {
+  margin-top: 16px;
+  padding: 10px 16px;
+  border-radius: 16px;
+
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  font-weight: 700;
+
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--panel-border);
+  box-shadow: 0 0 16px var(--accent-soft);
+  color: var(--accent);
+}
+
+/* =========================================================
+   7. MODE PAGES
+   ========================================================= */
+
+.mode-page {
+  display: none;
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease;
+}
+
+/* active page */
+.mode-page-active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* directional animation */
+.mode-enter-right {
+  transform: translateX(40px);
+}
+
+.mode-enter-left {
+  transform: translateX(-40px);
+}
+
+@keyframes pageFade {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================================
+   8. CONTROL PANELS & GROUPS
+   ========================================================= */
+
+.control-panel {
+  padding: 26px 28px;
+  border-radius: 20px;
+
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+
+  box-shadow:
+    0 10px 28px rgba(0,0,0,0.12),
+    0 0 10px var(--accent-soft);
+}
+
+.control-panel:focus-within,
+.control-panel.active-panel {
+  box-shadow:
+    0 0 20px var(--accent-glow),
+    0 12px 30px rgba(0,0,0,0.18);
+}
+
+.control-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+  margin-top: 16px;
+}
+
+.effect-toggle {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+/* =========================================================
+   9. KEYBOARD
+   ========================================================= */
+
+#keyboard {
+  margin: 32px auto;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  background: var(--panel-bg, #1a1a2e); /* キーボードの土台を少し暗くすると映えます */
+  border-radius: 20px;
+  border: 1px solid var(--panel-border);
+  overflow-x: auto;
+  gap: 2px; /* 鍵盤同士の隙間を一定に */
+}
+
+.key {
+  user-select: none;
+  cursor: pointer;
+  display: flex; /* テキスト配置用 */
+  align-items: flex-end; /* テキストを下に配置 */
+  justify-content: center; /* テキストを中央に配置 */
+  padding-bottom: 15px; /* 下の余白 */
+  font-weight: bold;
+  font-size: 0.75rem;
+  transition: transform 0.08s ease, background 0.15s ease, box-shadow 0.1s;
+}
+
+.key.white {
+  width: 45px;
+  height: 180px;
+  background: white;
+  color: #333;
+  border-radius: 0 0 8px 8px;
+  border: 1px solid rgba(0,0,0,0.1);
+  box-shadow: 0 4px 2px rgba(0,0,0,0.1);
+  z-index: 1;
+}
+
+.key.black {
+  width: 30px;
+  height: 110px;
+  background: #222;
+  color: #eee;
+  margin-left: -16px;
+  margin-right: -16px;
+  z-index: 2;
+  border-radius: 0 0 6px 6px;
+  font-size: 0.65rem; /* 黒鍵は少し小さく */
+  padding-bottom: 10px;
+  border: 1px solid #000;
+}
+
+/* 押した時のアニメーション */
+.key.key-active {
+  background: var(--accent, #00e5ff);
+  color: white;
+  transform: translateY(4px);
+  box-shadow: 0 0 15px var(--accent-glow);
+}
+
+.key:hover {
+  filter: brightness(0.95);
+}
+
+/* =========================================================
+   10. SAMPLE PADS
+   ========================================================= */
+
+#sample-area-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  width: 100%;
+}
+
+#pads-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3列固定 */
+  gap: 15px; /* パッド同士の隙間 */
+  max-width: 500px; /* 全体の幅を制限して中央に寄せやすくする */
+  margin: 20px auto;
+}
+
+.sample-pad {
+  width: 100%;           /* グリッドの幅に合わせる */
+  aspect-ratio: 1 / 1;   /* 正方形を維持 */
+  min-width: 60px;      /* 小さくなりすぎないように固定 */
+  min-height: 60px;     /* 大きさを固定 */
+  display: flex;
+  flex-direction: column; /* 数字と名前を縦に並べる */
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  box-sizing: border-box;
+  overflow: hidden;      /* はみ出した文字を隠す */
+  position: relative;
+}
+
+.sample-pad:hover {
+  background: var(--accent);
+  color: white;
+  box-shadow: 0 0 12px var(--accent-glow);
+}
+.sample-pad.active {
+  background: var(--accent);
+  color: white;
+}
+
+.pad-name {
+  position: absolute !important; 
+  bottom: 8px;           /* 下端に配置 */
+  left: 5px;
+  right: 5px;
+  font-size: 1rem;
+  font-weight: normal;
+  color: rgba(255, 255, 255, 0.8);
+  
+  /* 長い名前を省略する設定 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; 
+  text-align: center;
+  pointer-events: auto;  /* クリックで名前変更できるように */
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.tab-button.active {
+    background-color: var(--accent);
+    color: white;
+}
+
+/* =========================================================
+   PRESET LIST STYLES 
+   ========================================================= */
+
+/* リスト全体のスタイル */
+#presets-list, #basic-presets-list {
+  list-style: none;
+  padding: 0;
+  margin: 15px 0;
+  width: 100%;
+}
+
+/* 各リスト項目 (li) */
+#presets-list li, #basic-presets-list li {
+  display: flex;                /* 横並びにする */
+  justify-content: space-between; /* 両端に広げて配置 */
+  align-items: center;          /* 垂直方向の中央揃え */
+  background: rgba(255, 255, 255, 0.08); /* 背景を少し明るく */
+  border: 1px solid var(--panel-border);
+  margin-bottom: 8px;
+  padding: 10px 15px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+/* ホバー時に色を変える */
+#presets-list li:hover, #basic-presets-list li:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: var(--accent);
+}
+
+/* 削除ボタン (✖) */
+.delete-preset {
+  margin-left: 20px; /* 名前との間に余白を作る */
+  color: #ff5252;
+  font-size: 1.2rem;
+  padding: 5px 10px;
+  border-radius: 8px;
+}
+
+.delete-preset:hover {
+  background: rgba(255, 82, 82, 0.2);
+}
+
+/* プリセット名のテキスト */
+#presets-list li span:first-child, 
+#basic-presets-list li span:first-child {
+  flex-grow: 1; /* 名前部分を可能な限り広げる */
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+
+/* =========================================================
+   11. GOJUON MODE 
+   ========================================================= */
+
+.gojuon-wrapper {
+  --cell-w: 40px;
+  --cell-h: 36px;
+  --gap: 6px;
+}
+
+/* columns flow right→left  */
+.gojuon-grid {
+  display: grid;
+  grid-auto-flow: column;          /* build columns */
+  grid-auto-columns: max-content;  /* each column as wide as its content */
+  column-gap: 10px;
+  direction: rtl;                  /* first column on the right */
+  flex-wrap: unset;                
+  min-width: max-content;
+  background: #ffffff;
+  border: 1px solid #bbb;
+}
+
+/* Each column becomes a 6-row grid */
+.gojuon-row {
+  display: grid;
+  grid-template-rows: var(--cell-h) repeat(5, var(--cell-h));
+  row-gap: var(--gap);
+  justify-items: center;
+  align-items: center;
+}
+
+.row-label {
+  direction: ltr;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #333;
+  background: #f2f2f2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}
+
+.kana-key,
+.kana-empty {
+  direction: ltr;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  background: #ffffff;
+  color: #111;
+  border-bottom: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+}
+
+.kana-key { cursor: pointer; }
+
+.kana-key.active,
+.kana-key:active {
+  background: #e9f1ff;
+}
+
+.kana-empty {
+  background: #f6f6f6;
+  color: transparent;
+}
+
+.gojuon-row > :last-child {
+  border-right: none;
+}
+
+/* =========================================================
+   12. GAME MODE
+   ========================================================= */
+
+#game-pad-grid {
+  padding: 20px 32px;
+  gap: 24px;
+}
+
+.game-pad {
+  min-height: 90px;
+  width: 100%;
+  max-width: 140px;
+  margin: auto;
+}
+
+.game-pad-active {
+  background: var(--accent);
+  color: white;
+}
+
+/* =========================================================
+   13. BUTTONS & INPUTS
+   ========================================================= */
+
+button {
+ padding: 10px 20px;
+  min-height: 44px;
+  border-radius: var(--radius);
+  background: var(--btn-bg);
+  border: 1px solid var(--panel-border);
+  box-shadow: var(--shadow-glow);
+  color: var(--btn-text);
+  cursor: pointer;
+  font-weight: 600;
+  transition: var(--transition);
+}
+button:hover {
+  background: var(--btn-hover-bg);
+  box-shadow: 0 0 20px var(--accent-glow);
+}
+button:active {
+  box-shadow: 0 3px 8px rgba(0, 188, 212, 0.35);
+}
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+button:focus-visible {
+  outline: 3px solid #00e5ff;
+  outline-offset: 2px;
+}
+
+#login-btn {
+  background: #ff4081;
+  box-shadow: 0 4px 10px rgba(255, 64, 129, 0.4);
+}
+#login-btn:hover {
+  background: #e91e63;
+  box-shadow: 0 6px 14px rgba(255, 64, 129, 0.5);
+}
+
+#logout-btn {
+  background: #f44336;
+  box-shadow: 0 4px 10px rgba(244, 67, 54, 0.4);
+}
+#logout-btn:hover {
+  background: #d32f2f;
+  box-shadow: 0 6px 14px rgba(244, 67, 54, 0.5);
+}
+
+#random {
+  background: #ffeb3b;
+  color: #1a1a2e;
+  font-weight: 700;
+  font-size: 1.1em;
+  padding: 12px 25px;
+  margin: 20px auto;
+  display: block;
+  box-shadow: 0 6px 14px rgba(255, 235, 59, 0.4);
+}
+#random:hover {
+  background: #ffe033;
+  box-shadow: 0 8px 18px rgba(255, 235, 59, 0.5);
+}
+
+input[type="range"] {
+  height: 10px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  width: 26px;
+  height: 26px;
+  margin-top: -8px;
+  cursor: grab;
+}
+
+input[type="range"]:active::-webkit-slider-thumb {
+  cursor: grabbing;
+}
+
+/* Cyber emphasis */
+body.theme-cyber input[type="range"] {
+  box-shadow: 0 0 12px var(--accent-glow);
+}
+
+body.theme-cyber button {
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+/* =========================================================
+   14. RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 768px) {
+  #sample-area-container {
+    grid-template-columns: 1fr;
+  }
+
+  .key.white {
+    width: 34px;
+  }
+
+  .key.black {
+    width: 20px;
+    margin-left: -10px;
+    margin-right: -10px;
+  }
+}
+
+
+/* ===============================
+   GOJUON TEXT READER
+   =============================== */
+
+.gojuon-reader {
+  margin-bottom: 18px;
+  padding: 14px 16px;
+  background: rgba(255,255,255,0.85);
+  border: 1px solid #ccc;
+  border-radius: 16px;
+}
+
+.gojuon-reader label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+#gojuon-text {
+  width: 100%;
+  min-height: 70px;
+  resize: vertical;
+  padding: 10px;
+  font-size: 0.9rem;
+  border-radius: 10px;
+  border: 1px solid #bbb;
+  margin-bottom: 8px;
+}
+
+#gojuon-read-btn {
+  padding: 6px 14px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}

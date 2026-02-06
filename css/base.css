@@ -1,0 +1,100 @@
+/* -------- DEFAULT THEME -------- */
+:root {
+  --header-height: 72px;
+
+  --bg-main: radial-gradient(circle at 30% 20%, #e8fbff, #f9feff);
+  --text-main: #0a3c44;
+  --text-soft: #5c8b92;
+
+  --accent: #27c6c0;
+  --accent-soft: rgba(39,198,192,0.25);
+  --accent-glow: rgba(39,198,192,0.35); 
+
+  --panel-bg: rgba(255,255,255,0.85);
+  --panel-border: rgba(39,198,192,0.35);
+
+  --btn-bg: linear-gradient(135deg, #31d5cf, #1fb6b0);
+  --btn-text: #ffffff;
+
+  --radius: 16px;
+  --font-main: "Poppins", system-ui, sans-serif;
+}
+
+/* -------- CYBER THEME -------- */
+body.theme-cyber {
+  --bg-main:
+    radial-gradient(circle at 20% 20%, rgba(0,255,255,0.12), transparent 40%),
+    linear-gradient(135deg, #070014, #13002b);
+
+  --text-main: #e8faff;
+  --text-soft: rgba(232,250,255,0.7);
+
+  --accent: #00fff0;
+  --accent-soft: rgba(0,255,240,0.25);
+  --accent-glow: rgba(0,255,240,0.6);
+
+  --panel-bg: rgba(10, 8, 28, 0.9);
+  --panel-border: rgba(0,255,240,0.45);
+
+  --btn-bg: linear-gradient(135deg, #00fff0, #ff2bdc);
+  --btn-text: #050014;
+
+  --font-main: "Orbitron", "Poppins", system-ui, sans-serif;
+}
+
+/* ===============================
+   GLOBAL RESET 
+   =============================== */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100%;
+  font-family: var(--font-main);
+  background: var(--bg-main);
+  color: var(--text-main);
+
+  /* allow scrolling */
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* smooth theme transitions */
+body {
+  transition: background 0.5s ease, color 0.5s ease;
+}
+
+/* ===============================
+   GLOBAL ELEMENTS
+   =============================== */
+
+button,
+a.btn {
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-family: inherit;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* cyber accent */
+body.theme-cyber button,
+body.theme-cyber a.btn {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  box-shadow:
+    0 0 12px var(--accent-glow),
+    0 0 28px rgba(255,43,220,0.35);
+}
+
+body.theme-cyber button:hover,
+body.theme-cyber a.btn:hover {
+  transform: translateY(-2px) scale(1.05);
+}

@@ -1,0 +1,697 @@
+/* =========================================
+   Nature Page
+   ========================================= */
+
+/* ===============================
+   Base
+   =============================== */
+html, body {
+  width: 100%;
+  height: 100%;
+  font-family: var(--font-main);
+  color: var(--text-main);
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; 
+}
+
+/* Lock scroll only when sleep timer is open */
+body.sleep-lock {
+  overflow: hidden;
+}
+
+/* ===============================
+   Backgrounds
+   =============================== */
+body.page-nature {
+  background: linear-gradient(to bottom right, #e0f7fa, #ffffff);
+}
+
+body.page-nature.theme-cyber {
+  filter: saturate(0.85) contrast(0.95);
+}
+
+/* ===============================
+   Header
+   =============================== */
+.nature-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  z-index: 1000;
+  background: var(--panel-bg);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--panel-border);
+  animation: fadeDown 0.6s ease;
+}
+
+#header-recorder-controls {
+  margin-left: auto;
+}
+
+.home-btn,
+#theme-toggle {
+  border: none;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  color: var(--btn-text);
+  background: var(--btn-bg);
+  text-decoration: none;
+  box-shadow: 0 3px 8px rgba(0,0,0,.25);
+  transition: all 0.2s;
+}
+
+.home-btn:hover,
+#theme-toggle:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 12px rgba(0,0,0,.3);
+}
+
+/* ===============================
+   Scenes
+   =============================== */
+.scene {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1s ease;
+  pointer-events: none;
+}
+
+.scene.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+body.mode-lively .scene.active {
+  animation: floatSoft 25s ease-in-out infinite alternate;
+}
+
+/* ===============================
+   Control Panel
+   =============================== */
+.control-panel {
+  position: fixed;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  z-index: 900;
+  width: clamp(320px, 80vw, 860px);
+  padding: 14px 16px;
+  background: var(--panel-bg);
+  backdrop-filter: blur(8px);
+  border-radius: 18px;
+  border: 1px solid var(--panel-border);
+  box-shadow: 0 8px 18px rgba(0,0,0,.22);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.control-panel.minimized {
+  transform: translateX(-50%) translateY(calc(100% - 60px));
+  opacity: 0.7;
+}
+
+.control-panel button {
+  border: none;
+  border-radius: 14px;
+  padding: 12px 18px;
+  font-weight: 600;
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.control-panel button:hover {
+  transform: scale(1.05);
+}
+
+.top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.motion-toggle {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.motion-toggle button {
+  flex: 1;
+}
+
+.panel-content {
+  transition: max-height 0.4s ease;
+  overflow: hidden;
+}
+
+/* ===============================
+   Mixer Toggle
+   =============================== */
+.mixer-toggle {
+  width: 100%;
+  margin: 10px 0;
+  padding: 12px;
+  border-radius: 14px;
+  font-weight: 600;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid var(--panel-border);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.mixer-toggle:hover {
+  background: rgba(255,255,255,0.18);
+}
+
+/* ===============================
+   Mixer Panel
+   =============================== */
+.mixer-panel {
+  margin-top: 12px;
+  padding-top: 14px;
+  border-top: 1px solid var(--panel-border);
+  max-height: 800px;
+  overflow: hidden;
+  transition: max-height .45s ease, opacity .3s ease;
+}
+
+.mixer-panel.collapsed {
+  max-height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ===============================
+   Navigation
+   =============================== */
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.navigation button {
+  padding: 8px 16px;
+  font-size: 0.9rem;
+}
+
+/* ===============================
+   Timer Controls
+   =============================== */
+.timer-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 15px;
+  padding: 10px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 12px;
+}
+
+.timer-controls input {
+  padding: 8px;
+  border: 1px solid var(--panel-border);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.1);
+  color: var(--text-main);
+  width: 60px;
+}
+
+/* ===============================
+   Vol Sections
+   =============================== */
+.volume-section {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(180px, 1fr));
+  gap: 22px;
+  margin-top: 18px;
+  padding: 12px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 14px;
+}
+
+.volume-section label {
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: var(--text-main);
+}
+
+.volume-section input[type="range"] {
+  height: 8px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 4px;
+  outline: none;
+}
+
+.volume-section input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+}
+
+/* ===============================
+   Timer Corner
+   =============================== */
+.timer-corner {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1100;
+  background: rgba(255,255,255,.08);
+  backdrop-filter: blur(20px);
+  border-radius: 16px;
+  padding: 10px 20px;
+  color: var(--text-main);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.timer-corner button {
+  border: none;
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  background: rgba(255,255,255,0.15);
+  color: var(--text-main);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.timer-corner button:hover {
+  background: rgba(255,255,255,0.25);
+  transform: scale(1.05);
+}
+
+.timer-corner #timer-pause-btn {
+  background: rgba(255,255,255,0.15);
+}
+
+.timer-corner #timer-reset-btn {
+  background: rgba(255, 100, 100, 0.2);
+}
+
+.timer-corner #timer-reset-btn:hover {
+  background: rgba(255, 100, 100, 0.3);
+}
+
+/* ===============================
+   Sleep Timer 
+   =============================== */
+.sleep-timer-active {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.7);
+  z-index: 9998;
+  display: none;
+}
+
+.sleep-timer-active.active {
+  display: block;
+}
+
+.sleep-timer-mode {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 520px;
+  max-height: 85vh;
+  overflow-y: auto;
+  background: rgba(25, 38, 40, 0.98);
+  backdrop-filter: blur(25px);
+  border-radius: 20px;
+  padding: 28px;
+  z-index: 2000;
+  display: none;
+  color: #fff;
+  border: 1px solid rgba(120, 180, 170, 0.3);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.sleep-timer-mode.active {
+  display: block;
+  animation: slideUp 0.3s ease;
+}
+
+.sleep-timer-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sleep-timer-title {
+  margin: 0 0 10px 0;
+  font-size: 1.8rem;
+  color: #fff;
+  text-align: center;
+}
+
+.compact {
+  margin: 0;
+  padding: 0;
+}
+
+.weather-suggestion.compact {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+.weather-suggestion.compact #weather-icon {
+  font-size: 1.5rem;
+}
+
+.weather-suggestion.compact #weather-text {
+  font-size: 0.9rem;
+}
+
+/* Scene Preview */
+.scene-preview {
+  width: 100%;
+  height: 180px;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  margin: 10px 0;
+  border: 2px solid rgba(255,255,255,0.2);
+}
+
+.scene-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.scene-preview:hover img {
+  transform: scale(1.05);
+}
+
+.preview-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+  padding: 15px;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.sleep-customization.compact {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.scene-options.compact {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.scene-options.compact label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.scene-options.compact label:hover {
+  background: rgba(255,255,255,0.15);
+}
+
+.scene-options.compact input[type="radio"]:checked + span {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.volume-setting.compact {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 12px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 12px;
+}
+
+.volume-setting.compact input[type="range"] {
+  flex: 1;
+  height: 6px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 3px;
+}
+
+.volume-setting.compact input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+}
+
+.volume-value {
+  min-width: 40px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.sleep-timer-options.compact {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.sleep-option {
+  padding: 12px;
+  text-align: center;
+  background: rgba(255,255,255,0.08);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.sleep-option:hover {
+  background: rgba(255,255,255,0.15);
+}
+
+.sleep-option.selected {
+  background: var(--accent);
+  color: #fff;
+  transform: scale(1.05);
+}
+
+.sleep-custom-input.compact {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 12px;
+}
+
+.sleep-custom-input.compact input {
+  padding: 8px 12px;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  width: 80px;
+  text-align: center;
+}
+
+.sleep-timer-buttons.compact {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.sleep-timer-buttons.compact button {
+  flex: 1;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+#sleep-start-btn {
+  background: linear-gradient(135deg, var(--accent), #4aa08f);
+  color: #fff;
+}
+
+#sleep-start-btn:hover {
+  transform: scale(1.05);
+}
+
+#sleep-cancel-btn {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+}
+
+#sleep-cancel-btn:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+/* Goodnight Message */
+.sleep-goodnight {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3.5rem;
+  color: #fff;
+  z-index: 3000;
+  display: none;
+  text-shadow: 0 0 30px rgba(95, 179, 162, 0.7);
+  animation: pulse 2s infinite;
+  text-align: center;
+  font-weight: 300;
+  letter-spacing: 2px;
+  opacity: 0;
+}
+
+.sleep-goodnight.show {
+  display: block;
+  animation: fadeInOut 4s ease forwards;
+}
+
+/* Freeze background when sleep timer open */
+body.sleep-lock .control-panel,
+body.sleep-lock .timer-corner,
+body.sleep-lock .nature-header {
+  pointer-events: none;
+  filter: blur(2px);
+}
+
+.panel-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 850;
+  display: none;
+}
+
+body.panel-open .panel-overlay {
+  display: block;
+}
+
+/* ===============================
+   Animations
+   =============================== */
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes floatSoft {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translate(-50%, -40%); }
+  to { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+  20% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  80% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.2); }
+}
+
+/* ===============================
+   Responsive
+   =============================== */
+@media (max-width: 768px) {
+  .volume-section {
+    grid-template-columns: 1fr;
+  }
+  
+  .scene-options.compact {
+    grid-template-columns: 1fr;
+  }
+  
+  .sleep-timer-options.compact {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .control-panel {
+    width: 95vw;
+    padding: 12px;
+  }
+  
+  .sleep-timer-mode {
+    padding: 20px;
+    width: 92vw;
+    max-height: 90vh;
+  }
+  
+  .scene-preview {
+    height: 150px;
+  }
+  
+  .sleep-goodnight {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .sleep-timer-options.compact {
+    grid-template-columns: 1fr;
+  }
+  
+  .sleep-timer-buttons.compact {
+    flex-direction: column;
+  }
+  
+  .scene-preview {
+    height: 120px;
+  }
+  
+  .sleep-goodnight {
+    font-size: 2rem;
+  }
+}
