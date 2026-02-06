@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>サウンドグランド</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/nature.css">
+  <link rel="icon" href="data:,">
+</head>
+
+<body class="page-nature">
+
+<!-- ================= HEADER ================= -->
+<header class="nature-header">
+  <a href="home.html" class="home-btn">🏠 ホーム</a>
+  <button id="theme-toggle">🌿 テーマ</button>
+  <div id="header-recorder-controls"></div>
+</header>
+
+<!-- ================= TIMER CORNER ================= -->
+<div class="timer-corner" id="timer-corner" style="display:none;">
+  ⏰ <span id="timer-countdown">30:00</span>
+  <button id="timer-pause-btn" style="margin-left: 10px; padding: 2px 8px; font-size: 0.8rem;
+   background: rgba(255,255,255,0.2); border: none; border-radius: 6px; 
+   color: rgb(115, 170, 163); cursor: pointer;">⏸</button>
+  <button id="timer-reset-btn" style="margin-left: 5px; padding: 2px 8px; font-size: 0.8rem; 
+   background: rgba(255,255,255,0.2); border: none; border-radius: 6px; 
+   color:rgb(115, 170, 163); cursor: pointer;">↺</button>
+</div>
+
+<!-- ================= SLEEP TIMER MODAL ================= -->
+<div class="sleep-timer-mode" id="sleep-timer-mode">
+  <div class="sleep-timer-content">
+
+    <h2 class="sleep-timer-title">🌙 おやすみタイマー</h2>
+
+    <div class="weather-suggestion compact">
+      <span id="weather-icon">🌙</span>
+      <span id="weather-text">時間帯に合わせた音をおすすめ</span>
+    </div>
+
+    <!-- Scene Preview -->
+    <div class="scene-preview" id="scene-preview">
+      <img src="img/fire.jpg" alt="選択中のシーン" id="preview-image">
+      <div class="preview-overlay">
+        <span id="preview-title">焚き火</span>
+      </div>
+    </div>
+
+    <!-- Sleep Sound -->
+    <div class="sleep-customization compact">
+      <label>
+        <input type="radio" name="sleep-sound" value="auto" checked>
+        ⏱️ 自動選択
+      </label>
+
+      <div class="scene-options compact">
+        <label><input type="radio" name="sleep-sound" value="scene-waterfall" data-img="lake.jpg" data-title="滝"> 🌊 滝</label>
+        <label><input type="radio" name="sleep-sound" value="scene-nightcamp" data-img="fire.jpg" data-title="焚き火"> 🔥 焚き火</label>
+        <label><input type="radio" name="sleep-sound" value="scene-ocean" data-img="ocean.jpg" data-title="海"> 🌊 海</label>
+        <label><input type="radio" name="sleep-sound" value="scene-rainy" data-img="rainyday.jpg" data-title="雨"> 🌧️ 雨</label>
+        <label><input type="radio" name="sleep-sound" value="scene-space" data-img="space.jpg" data-title="宇宙"> 🪐 宇宙</label>
+        <label><input type="radio" name="sleep-sound" value="scene-tropical" data-img="tropical.jpg" data-title="トロピカル"> 🏝️ トロピカル</label>
+        <label><input type="radio" name="sleep-sound" value="scene-cabin" data-img="cabin.jpg" data-title="冬の小屋"> 🏠 冬の小屋</label>
+        <label><input type="radio" name="sleep-sound" value="scene-meadow" data-img="meadow.jpg" data-title="草原"> 🌿 草原</label>
+        <label><input type="radio" name="sleep-sound" value="scene-autumn" data-img="autumn.jpg" data-title="秋"> 🍂 秋</label>
+      </div>
+
+      <div class="volume-setting compact">
+        <label>🔈 音量</label>
+        <input type="range" class="sleep-volume" min="0.1" max="1" step="0.1" value="0.3">
+        <span class="volume-value">30%</span>
+      </div>
+    </div>
+
+    <!-- Duration -->
+    <div class="sleep-timer-options compact">
+      <div class="sleep-option selected" data-minutes="30">30分</div>
+      <div class="sleep-option" data-minutes="15">15分</div>
+      <div class="sleep-option" data-minutes="45">45分</div>
+      <div class="sleep-option" data-minutes="60">60分</div>
+      <div class="sleep-option" data-minutes="90">90分</div>
+      <div class="sleep-option" data-minutes="120">120分</div>
+    </div>
+
+    <div class="sleep-custom-input compact">
+      <label>時間</label>
+      <input type="number" id="custom-minutes" min="1" max="240" step="1" value="30">
+      <span>分</span>
+    </div>
+
+    <div class="sleep-timer-buttons compact">
+      <button id="sleep-start-btn">🌙 開始</button>
+      <button id="sleep-cancel-btn">キャンセル</button>
+    </div>
+
+  </div>
+</div>
+
+<div class="sleep-timer-active" id="sleep-timer-active"></div>
+<div class="sleep-goodnight" id="sleep-goodnight">おやすみなさい 🌙</div>
+
+<!-- ================= MAIN ================= -->
+<main>
+  <!-- ============= SCENE AREA ============= -->
+  <div class="scene-wrapper">
+    <!-- === Scene 1: 滝 (Waterfall) === -->
+    <div class="scene active" id="scene-waterfall" style="background-image: url('img/lake.jpg')">
+      <div class="zone waterfall-main" data-sound="waterfall" title="滝の音"></div>
+      <div class="zone waterfall-birds" data-sound="birds_forest" title="森の鳥"></div>
+      <div class="zone waterfall-wind" data-sound="wind_valley" title="谷の風"></div>
+    </div>
+
+    <!-- === Scene 2: キャンプ (Night Camp) === -->
+    <div class="scene" id="scene-nightcamp" style="background-image: url('img/fire.jpg')">
+      <div class="zone nightcamp-fire" data-sound="campfire" title="焚き火"></div>
+      <div class="zone nightcamp-insects" data-sound="crickets" title="虫の音"></div>
+      <div class="zone nightcamp-wind" data-sound="nightwind" title="夜風"></div>
+    </div>
+
+    <!-- === Scene 3: 海 (Ocean) === -->
+    <div class="scene" id="scene-ocean" style="background-image: url('img/ocean.jpg')">
+      <div class="zone ocean-waves" data-sound="waves" title="波"></div>
+      <div class="zone ocean-gulls" data-sound="seagulls" title="カモメ"></div>
+      <div class="zone ocean-breeze" data-sound="seabreeze" title="海風"></div>
+    </div>
+
+    <!-- === Scene 4: 雨 (Rainy) === -->
+    <div class="scene" id="scene-rainy" style="background-image: url('img/rainyday.jpg')">
+      <div class="zone rainy-sky" data-sound="rain" title="雨音"></div>
+      <div class="zone rainy-window" data-sound="raindrops" title="窓のしずく"></div>
+      <div class="zone rainy-room" data-sound="soft_rainy" title="室内アンビエント"></div>
+    </div>
+
+    <!-- === Scene 5: 宇宙 (Space) === -->
+    <div class="scene" id="scene-space" style="background-image:url('img/space.jpg')">
+      <div class="zone space-pad" data-sound="soft_space" title="Soft pad"></div>
+      <div class="zone space-winddeep" data-sound="space_wind" title="Cosmic wind"></div>
+      <div class="zone space-air" data-sound="wind_space" title="Airy bed"></div>
+    </div>
+
+    <!-- === Scene 6: トロピカル (Tropical) === -->
+    <div class="scene" id="scene-tropical" style="background-image:url('img/tropical.jpg')">
+      <div class="zone tropical-breeze" data-sound="seabreeze" title="海風"></div>
+      <div class="zone tropical-frog" data-sound="frog" title="カエルの音"></div>
+      <div class="zone tropical-pad" data-sound="soft_tropical" title="Warm night pad"></div>
+    </div>
+
+    <!-- === Scene 7: 冬の小屋 (Cabin) === -->
+    <div class="scene" id="scene-cabin" style="background-image:url('img/cabin.jpg')">
+      <div class="zone cabin-fireplace" data-sound="campfire" title="暖炉の火"></div>
+      <div class="zone cabin-outsidewind" data-sound="wind_winter" title="外の風"></div>
+      <div class="zone cabin-roomtone" data-sound="soft_cabin" title="室内の安らぎ"></div>
+    </div>
+
+    <!-- === Scene 8: 草・花 (Meadow) === -->
+    <div class="scene" id="scene-meadow" style="background-image:url('img/meadow.jpg')">
+      <div class="zone meadow-birds" data-sound="birds_meadow" title="草原の鳥"></div>
+      <div class="zone meadow-wind" data-sound="wind_field" title="草の風"></div>
+      <div class="zone meadow-pad" data-sound="soft_meadow" title="雰囲気パッド"></div>
+    </div>
+
+    <!-- === Scene 9: 秋 (Autumn) === -->
+    <div class="scene" id="scene-autumn" style="background-image:url('img/autumn.jpg')">
+      <div class="zone autumn-birds" data-sound="birds_autumn" title="秋の鳥"></div>
+      <div class="zone autumn-wind" data-sound="wind_autumn" title="秋の風"></div>
+      <div class="zone autumn-pad" data-sound="soft_autumn" title="柔らかい音楽"></div>
+    </div>
+  </div>
+
+  <!-- ================= CONTROL PANEL ================= -->
+  <div class="control-panel" id="control-panel">
+    <div class="top-row">
+      <button id="stop-btn">⏹</button>
+      <button id="panel-toggle" class="panel-toggle">☰</button>
+    </div>
+
+    <div class="motion-toggle">
+      <button id="toggle-mood">🌙 止める</button>
+      <button id="sleep-timer-btn" class="timer-btn">🌙 おやすみタイマー</button>
+    </div>
+
+    <!-- Panel Content -->
+    <div class="panel-content">
+      <!-- Mixer Toggle -->
+      <button id="mixer-toggle" class="mixer-toggle">🎚 ミキサーを開く</button>
+
+      <!-- Mixer Panel -->
+      <div id="mixer-panel" class="mixer-panel collapsed">
+        <div class="navigation">
+          <button id="prev-scene">← 戻る</button>
+          <button id="next-scene">次の画像 →</button>
+        </div>
+
+        <!-- volume sliders per scene  -->
+        <div class="volume-section" id="volume-waterfall">
+          <label>滝 <input type="range" min="0" max="1" step="0.01" value="0" data-sound="waterfall" /></label>
+          <label>鳥 <input type="range" min="0" max="1" step="0.01" value="0" data-sound="birds_forest" /></label>
+          <label>風 <input type="range" min="0" max="1" step="0.01" value="0" data-sound="wind_valley" /></label>
+        </div>
+
+        <div class="volume-section" id="volume-nightcamp" style="display: none;">
+          <label>焚き火 <input type="range" min="0" max="1" step="0.01" value="0" data-sound="campfire" /></label>
+          <label>虫の音 <input type="range" min="0" max="1" step="0.01" value="0" data-sound="crickets" /></label>
+          <label>夜風 <input type="range" min="0" max="1" step="0.01" value="0" data-sound="nightwind" /></label>
+        </div>
+
+        <div class="volume-section" id="volume-ocean" style="display: none;">
+          <label>波 <input type="range" min="0" max="1" step="0.01" value="0" data-sound="waves" /></label>
+          <label>カモメ <input type="range" min="0" max="1" step="0.01" value="0" data-sound="seagulls" /></label>
+          <label>海風 <input type="range" min="0" max="1" step="0.01" value="0" data-sound="seabreeze" /></label>
+        </div>
+
+        <div class="volume-section" id="volume-rainy" style="display: none;">
+          <label>雨音 <input type="range" min="0" max="1" step="0.01" value="0" data-sound="rain" /></label>
+          <label>窓の滴 <input type="range" min="0" max="1" step="0.01" value="0" data-sound="raindrops" /></label>
+          <label>室内の音 <input type="range" min="0" max="1" step="0.01" value="0" data-sound="soft_rainy" /></label>
+        </div>
+
+        <div class="volume-section" id="volume-space" style="display:none;">
+          <label>音楽 <input type="range" min="0" max="1" step="0.01" value="0" data-sound="soft_space"></label>
+          <label>宇宙の風 <input type="range" min="0" max="1" step="0.01" value="0" data-sound="space_wind"></label>
+          <label>エアー <input type="range" min="0" max="1" step="0.01" value="0" data-sound="wind_space" /></label>
+        </div>
+
+        <div class="volume-section" id="volume-tropical" style="display: none;">
+          <label>海風   <input type="range" min="0" max="1" step="0.01" value="0" data-sound="seabreeze" /></label>
+          <label>カエルの音 <input type="range" min="0" max="1" step="0.01" value="0" data-sound="frog" /></label>
+          <label>音楽   <input type="range" min="0" max="1" step="0.01" value="0" data-sound="soft_tropical" /></label>
+        </div>
+
+        <div class="volume-section" id="volume-cabin" style="display: none;">
+          <label>焚き火     <input type="range" min="0" max="1" step="0.01" value="0" data-sound="campfire" /></label>
+          <label>外の風     <input type="range" min="0" max="1" step="0.01" value="0" data-sound="wind_winter" /></label>
+          <label>室内の音   <input type="range" min="0" max="1" step="0.01" value="0" data-sound="soft_cabin" /></label>
+        </div>
+
+        <div class="volume-section" id="volume-meadow" style="display: none;">
+          <label>鳥     <input type="range" min="0" max="1" step="0.01" value="0" data-sound="birds_meadow" /></label>
+          <label>草の風 <input type="range" min="0" max="1" step="0.01" value="0" data-sound="wind_field" /></label>
+          <label>雰囲気 <input type="range" min="0" max="1" step="0.01" value="0" data-sound="soft_meadow" /></label>
+        </div>
+
+        <div class="volume-section" id="volume-autumn" style="display: none;">
+          <label>鳥   <input type="range" min="0" max="1" step="0.01" value="0" data-sound="birds_autumn" /></label>
+          <label>風   <input type="range" min="0" max="1" step="0.01" value="0" data-sound="wind_autumn" /></label>
+          <label>葉っぱ <input type="range" min="0" max="1" step="0.01" value="0" data-sound="soft_autumn" /></label>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="js/nature.js"></script>
+</body>
+</html>
